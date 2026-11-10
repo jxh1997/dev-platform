@@ -1,0 +1,58 @@
+name: Engineering checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4.7
+        env:
+          MYSQL_ROOT_PASSWORD: ci-root-isolated-service-only
+          MYSQL_DATABASE: dev_platform_test
+          MYSQL_USER: devplatform_test
+          MYSQL_PASSWORD: ci-user-isolated-service-only
+        ports: ["13307:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    env:
+      CI: true
+      APP_ENV: test
+      INSTANCE_ID: dev-platform-test
+      APP_ORIGIN: http://127.0.0.1:5777
+      HOST: 127.0.0.1
+      PORT: 4311
+      DB_HOST: 127.0.0.1
+      DB_PORT: 13307
+      DB_DATABASE: dev_platform_test
+      DB_USERNAME: devplatform_test
+      DB_PASSWORD: ci-user-isolated-service-only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Generate isolated JWT key and public frontend config
+        run: |
+          echo "JWT_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+          cp apps/admin-web/.env.example apps/admin-web/.env
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm check:boundaries
+      - run: pnpm api:check
+      - run: pnpm build
+      - run: pnpm test:integration
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: test-results/

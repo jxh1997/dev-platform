@@ -1,0 +1,81 @@
+name: dev-platform
+x-server: &server
+  image: dev-platform-server:0.1.0-alpha.1
+  environment:
+    APP_ENV: production
+    INSTANCE_ID: ${INSTANCE_ID:?required}
+    APP_ORIGIN: ${APP_ORIGIN:?required}
+    JWT_SECRET: ${JWT_SECRET:?required}
+    DB_USERNAME: ${DB_USERNAME:?required}
+    DB_PASSWORD: ${DB_PASSWORD:?required}
+    DB_DATABASE: ${DB_DATABASE:?required}
+    DB_HOST: mysql
+    DB_PORT: 3306
+    HOST: 0.0.0.0
+    PORT: 3000
+  init: true
+  networks: [private]
+services:
+  mysql:
+    image: mysql:8.4.7
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:?required}
+      MYSQL_USER: ${DB_USERNAME:?required}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?required}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?required}
+      TZ: UTC
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_as_cs", "--default-time-zone=+00:00"]
+    volumes: ["mysql-data:/var/lib/mysql"]
+    restart: unless-stopped
+    networks: [private]
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -u$$MYSQL_USER -e 'SELECT 1' $$MYSQL_DATABASE >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  migrate:
+    <<: *server
+    pull_policy: never
+    command: ["node", "dist/packages/database/src/cli.js", "run"]
+    depends_on:
+      mysql: { condition: service_healthy }
+    restart: "no"
+  server:
+    <<: *server
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.server
+    command: ["node", "dist/apps/server/src/main.js"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/v1/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp"]
+  web:
+    image: dev-platform-web:0.1.0-alpha.1
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.web
+    ports: ["127.0.0.1:${WEB_PORT:-8080}:8080"]
+    depends_on:
+      server: { condition: service_healthy }
+    restart: unless-stopped
+    networks: [private]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+networks:
+  private:
+volumes:
+  mysql-data:

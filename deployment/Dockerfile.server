@@ -1,0 +1,60 @@
+ARG BUILD_BASE_IMAGE=node:24.22.2-bookworm-slim
+FROM ${BUILD_BASE_IMAGE} AS build
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
+WORKDIR /app
+COPY ["package.json", "pnpm-workspace.yaml", "pnpm-lock.yaml", ".npmrc", "./"]
+COPY ["apps/admin-web/package.json", "apps/admin-web/"]
+COPY ["apps/server/package.json", "apps/server/"]
+COPY ["packages/@core/base/design/package.json", "packages/@core/base/design/"]
+COPY ["packages/@core/base/icons/package.json", "packages/@core/base/icons/"]
+COPY ["packages/@core/base/shared/package.json", "packages/@core/base/shared/"]
+COPY ["packages/@core/base/typings/package.json", "packages/@core/base/typings/"]
+COPY ["packages/@core/composables/package.json", "packages/@core/composables/"]
+COPY ["packages/@core/preferences/package.json", "packages/@core/preferences/"]
+COPY ["packages/@core/ui-kit/form-ui/package.json", "packages/@core/ui-kit/form-ui/"]
+COPY ["packages/@core/ui-kit/layout-ui/package.json", "packages/@core/ui-kit/layout-ui/"]
+COPY ["packages/@core/ui-kit/menu-ui/package.json", "packages/@core/ui-kit/menu-ui/"]
+COPY ["packages/@core/ui-kit/popup-ui/package.json", "packages/@core/ui-kit/popup-ui/"]
+COPY ["packages/@core/ui-kit/shadcn-ui/package.json", "packages/@core/ui-kit/shadcn-ui/"]
+COPY ["packages/@core/ui-kit/tabs-ui/package.json", "packages/@core/ui-kit/tabs-ui/"]
+COPY ["packages/backend-modules/package.json", "packages/backend-modules/"]
+COPY ["packages/constants/package.json", "packages/constants/"]
+COPY ["packages/contracts/package.json", "packages/contracts/"]
+COPY ["packages/database/package.json", "packages/database/"]
+COPY ["packages/effects/access/package.json", "packages/effects/access/"]
+COPY ["packages/effects/common-ui/package.json", "packages/effects/common-ui/"]
+COPY ["packages/effects/hooks/package.json", "packages/effects/hooks/"]
+COPY ["packages/effects/layouts/package.json", "packages/effects/layouts/"]
+COPY ["packages/effects/plugins/package.json", "packages/effects/plugins/"]
+COPY ["packages/effects/request/package.json", "packages/effects/request/"]
+COPY ["packages/icons/package.json", "packages/icons/"]
+COPY ["packages/locales/package.json", "packages/locales/"]
+COPY ["packages/preferences/package.json", "packages/preferences/"]
+COPY ["packages/stores/package.json", "packages/stores/"]
+COPY ["packages/styles/package.json", "packages/styles/"]
+COPY ["packages/types/package.json", "packages/types/"]
+COPY ["packages/utils/package.json", "packages/utils/"]
+COPY ["internal/lint-configs/commitlint-config/package.json", "internal/lint-configs/commitlint-config/"]
+COPY ["internal/lint-configs/eslint-config/package.json", "internal/lint-configs/eslint-config/"]
+COPY ["internal/lint-configs/oxfmt-config/package.json", "internal/lint-configs/oxfmt-config/"]
+COPY ["internal/lint-configs/oxlint-config/package.json", "internal/lint-configs/oxlint-config/"]
+COPY ["internal/lint-configs/stylelint-config/package.json", "internal/lint-configs/stylelint-config/"]
+COPY ["internal/node-utils/package.json", "internal/node-utils/"]
+COPY ["internal/tailwind-config/package.json", "internal/tailwind-config/"]
+COPY ["internal/tsconfig/package.json", "internal/tsconfig/"]
+COPY ["internal/vite-config/package.json", "internal/vite-config/"]
+COPY ["scripts/turbo-run/package.json", "scripts/turbo-run/"]
+COPY ["scripts/vsh/package.json", "scripts/vsh/"]
+RUN pnpm install --frozen-lockfile --ignore-scripts
+COPY . .
+RUN pnpm rebuild && pnpm -r --if-present run stub
+RUN pnpm build:server
+FROM node:24.22.2-bookworm-slim
+ENV NODE_ENV=production
+WORKDIR /app
+COPY --from=build --chown=node:node /app /app
+USER node
+EXPOSE 3000
+CMD ["node", "dist/apps/server/src/main.js"]

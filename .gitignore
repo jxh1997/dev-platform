@@ -1,0 +1,56 @@
+# 操作系统与编辑器本地文件
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+*.swp
+*.swo
+*~
+
+# 依赖与包管理器缓存；保留锁文件
+node_modules/
+.pnpm-store/
+.npm/
+
+# 本地环境与凭据；允许提交无秘密的配置模板
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.template
+!.env.*.template
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+/secrets/
+/credentials/
+
+# 构建、测试与工具缓存
+dist/
+build/
+coverage/
+.vite/
+.turbo/
+.cache/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# 运行日志与临时文件
+*.log
+logs/
+tmp/
+temp/
+
+# 本地数据库、队列、上传与备份数据（不忽略迁移和种子）
+/deployment/data/
+/deployment/volumes/
+/uploads/
+/backups/

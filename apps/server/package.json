@@ -1,0 +1,9 @@
+{
+  "name": "@dev-platform/server",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -w dev:server"
+  },
+  "type": "commonjs"
+}
