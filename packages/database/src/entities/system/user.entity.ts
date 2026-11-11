@@ -16,6 +16,7 @@ export class User {
   @Column({ type: 'boolean', default: true }) enabled!: boolean;
   @Column({ name: 'must_change_password', type: 'boolean', default: true })
   mustChangePassword!: boolean;
+  @Column({ type: 'int', default: 1 }) version!: number;
   @Column({ name: 'security_version', type: 'int', default: 1 })
   securityVersion!: number;
 }

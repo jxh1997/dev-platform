@@ -82,7 +82,8 @@ const toggleKeydownListener = () => {
 };
 
 const toggleOpen = () => {
-  open.value ? modalApi.close() : modalApi.open();
+  if (open.value) modalApi.close();
+  else modalApi.open();
 };
 
 watch(() => props.enableShortcutKey, toggleKeydownListener);
@@ -134,7 +135,9 @@ onMounted(() => {
         </div>
       </template>
     </Modal>
-    <div
+    <button
+      type="button"
+      :aria-label="$t('ui.widgets.search.title')"
       class="group flex h-8 cursor-pointer items-center gap-3 rounded-2xl border-none bg-none px-2 py-0.5 outline-hidden md:bg-accent"
       @click="toggleOpen()"
     >
@@ -154,6 +157,6 @@ onMounted(() => {
         <kbd>K</kbd>
       </span>
       <span v-else></span>
-    </div>
+    </button>
   </div>
 </template>

@@ -6,6 +6,7 @@ import {
   AuthGuard,
   AuthModule,
   RecordsModule,
+  SystemModule,
   Public,
 } from '../../../../packages/backend-modules/src';
 import { DatabaseModule } from './database.module';
@@ -32,7 +33,7 @@ class HealthController {
 }
 
 @Module({
-  imports: [DatabaseModule, AuthModule, RecordsModule],
+  imports: [DatabaseModule, AuthModule, RecordsModule, SystemModule],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: AuthGuard }],
 })

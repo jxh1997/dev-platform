@@ -13,6 +13,8 @@ export interface Principal {
   mustChangePassword: boolean;
   username: string;
   realName: string;
+  roles: string[];
+  isSuperAdmin: boolean;
   permissions: Record<string, 'ALL' | 'SELF'>;
 }
 export interface AppRequest extends Request {

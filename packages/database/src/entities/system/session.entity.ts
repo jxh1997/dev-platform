@@ -16,5 +16,12 @@ export class Session {
     nullable: true,
   })
   revokedAt!: Date | null;
+  @Column({
+    name: 'revoked_reason',
+    type: 'varchar',
+    length: 64,
+    nullable: true,
+  })
+  revokedReason!: string | null;
   @Column({ name: 'security_version', type: 'int' }) securityVersion!: number;
 }

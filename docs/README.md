@@ -18,15 +18,18 @@
 |---|---|
 | [AGENTS.md](../AGENTS.md) | 面向支持仓库指令文件的工具，提供短入口和不可绕过的约束 |
 | [AI.md](../AI.md) | 完整 AI 工作规则、范围控制、风险分类、验证与交接 |
+| [项目开发技能](../.agents/skills/dev-platform-workflow/SKILL.md) | 按需读取、大小改动分流、先审计划后编码与定向验证 |
 | [工程目录与编码](standards/engineering.md) | 目录、依赖、命名、公共能力和命令契约 |
 | [接口与数据](standards/api-data.md) | API、DTO、错误、精度、时区、并发、DDL 与契约来源 |
 | [后端开发](standards/backend.md) | NestJS 职责、权限、事务、数据访问和配置 |
 | [UI／UX 与视觉质量](standards/ui-ux.md) | 后台信息组织、视觉语言、交互、Vue 实现和浏览器验收 |
 | [UI 技能基线](architecture/ui-skill-baseline.md) | 技能来源、固定提交、审查范围与复现方式 |
+| [后台通用交互恢复](architecture/ADR-003-admin-shell.md) | 固定来源补丁、登录／偏好／全屏／锁屏与消息边界 |
 | [前端开发](standards/frontend.md) | Vben 页面、请求、表单、状态和缓存 |
 | [安全、文件与任务](standards/security-jobs.md) | 身份、文件、导入导出、队列和授权失效 |
 | [质量与交付](standards/quality-delivery.md) | 测试矩阵、CI、迁移演练、发布与恢复 |
 | [规则检查索引](standards/rule-index.md) | 核心规则、实现位置与验证方式 |
+| [本地环境与端口](development/local-environment.md) | 日常启动、停止、重启、日志、端口与按需测试服务 |
 | [新模块开发指南](development/module-guide.md) | 设备台账完整实例及逐步开发方式 |
 | [模块设计模板](templates/module-spec.md) | 需求、数据、API、权限、事务与验收单一入口 |
 | [AI 任务模板](templates/ai-task.md) | 可复制的 AI 开发任务输入 |

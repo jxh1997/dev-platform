@@ -37,7 +37,7 @@ const emit = defineEmits<{
   viewAll: [];
 }>();
 
-const [open, toggle] = useToggle();
+const [open] = useToggle();
 
 const close = () => {
   open.value = false;
@@ -57,17 +57,22 @@ const handleClear = () => {
 };
 </script>
 <template>
-  <VbenPopover v-model:open="open" content-class="relative right-2 w-90 p-0">
+  <VbenPopover
+    v-model:open="open"
+    trigger-as-child
+    content-class="relative right-2 w-90 p-0"
+  >
     <template #trigger>
-      <div class="mr-2 flex-center h-full" @click.stop="toggle()">
-        <VbenIconButton class="bell-button relative text-foreground">
-          <span
-            v-if="dot"
-            class="absolute top-0.5 right-0.5 size-2 rounded-sm bg-primary"
-          ></span>
-          <Bell class="size-4" />
-        </VbenIconButton>
-      </div>
+      <VbenIconButton
+        :aria-label="$t('ui.widgets.notifications')"
+        class="bell-button relative mr-2 text-foreground"
+      >
+        <span
+          v-if="dot"
+          class="absolute top-0.5 right-0.5 size-2 rounded-sm bg-primary"
+        ></span>
+        <Bell class="size-4" />
+      </VbenIconButton>
     </template>
 
     <div class="relative">

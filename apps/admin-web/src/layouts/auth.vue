@@ -1,120 +1,79 @@
 <script lang="ts" setup>
-import { ThemeToggle } from '@vben/layouts';
+import { AuthPageLayout } from '@vben/layouts';
 import { preferences } from '@vben/preferences';
+import AuthToolbar from './components/auth-toolbar.vue';
 </script>
 <template>
-  <div class="auth-shell">
-    <header class="auth-header">
+  <AuthPageLayout
+    class="auth-shell"
+    :class="`auth-layout-${preferences.app.authPageLayout}`"
+    app-name="DevPlatform"
+    :logo="preferences.logo.source"
+    :logo-dark="preferences.logo.sourceDark"
+    page-title="DevPlatform 管理工作台"
+    page-description="统一业务入口，让管理工作更高效"
+  >
+    <template #logo>
       <a
         href="#/auth/login"
         class="auth-brand"
         aria-label="DevPlatform 登录首页"
-        ><img
-          :src="preferences.logo.source"
-          width="32"
-          height="32"
-          alt=""
-        /><span translate="no">DevPlatform</span></a
       >
-      <ThemeToggle />
-    </header>
-    <main class="auth-main">
-      <aside class="auth-context">
-        <span class="auth-label">BaJie Dev / 管理后台</span>
-        <h2 class="auth-title">DevPlatform<br />管理工作台</h2>
-        <p class="auth-intro">设备信息集中维护，业务记录清晰可查。</p>
-        <p class="auth-help">
-          使用已分配的账号登录。<br />首次登录请先完成密码设置。
-        </p>
-      </aside>
-      <div class="auth-form"><RouterView /></div>
-    </main>
-    <footer class="auth-footer">© 2026 BaJie Dev</footer>
-  </div>
+        <img :src="preferences.logo.source" width="40" height="40" alt="" />
+        <span translate="no">DevPlatform</span>
+      </a>
+    </template>
+    <template #toolbar
+      ><div class="auth-toolbar-position"><AuthToolbar /></div
+    ></template>
+    <template #copyright><span>© 2026 BaJie Dev</span></template>
+  </AuthPageLayout>
 </template>
 <style scoped>
 .auth-shell {
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-.auth-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 40px;
 }
 .auth-brand {
+  position: absolute;
+  z-index: 10;
+  top: 24px;
+  left: 24px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 18px;
+  color: hsl(var(--foreground));
+  font-size: 20px;
   font-weight: 600;
 }
 .auth-brand:focus-visible {
   outline: 2px solid hsl(var(--primary));
   outline-offset: 5px;
 }
-.auth-main {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  width: min(960px, 100%);
-  margin: 0 auto;
-  padding: 48px 32px;
-  gap: 80px;
+.auth-toolbar-position {
+  position: absolute;
+  z-index: 20;
+  top: 24px;
+  right: 24px;
 }
-.auth-context {
-  padding: 24px 0;
-}
-.auth-label {
-  font-size: 13px;
-  color: hsl(var(--muted-foreground));
-}
-.auth-title {
-  margin: 20px 0;
-  font-size: 38px;
-  line-height: 1.4;
-  font-weight: 600;
-  letter-spacing: -1px;
-}
-.auth-intro,
-.auth-help {
-  font-size: 14px;
-  color: hsl(var(--muted-foreground));
-  line-height: 1.8;
-}
-.auth-help {
-  margin-top: 48px;
-  padding-top: 20px;
-  border-top: 1px solid hsl(var(--border));
-}
-.auth-form {
-  min-width: 0;
-  width: 100%;
-  padding: 16px 0;
-}
-.auth-footer {
-  padding: 20px;
-  text-align: center;
-  font-size: 12px;
-  color: hsl(var(--muted-foreground));
-}
-@media (max-width: 760px) {
-  .auth-header {
-    padding: 20px 24px;
+@media (max-width: 640px) {
+  .auth-brand {
+    top: 20px;
+    left: 20px;
+    font-size: 16px;
+    gap: 8px;
   }
-  .auth-main {
-    grid-template-columns: 1fr;
-    max-width: 448px;
-    padding: 32px 24px;
-    gap: 0;
+  .auth-brand img {
+    width: 32px;
+    height: 32px;
   }
-  .auth-context {
-    display: none;
+  .auth-toolbar-position {
+    top: 20px;
+    right: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :deep(.animate-float) {
+    animation: none;
   }
 }
 </style>

@@ -2,6 +2,9 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { z } from 'zod';
+import { MenuIcons1794355202000 } from './migrations/1794355202000-menu-icons';
+import { NormalizeUsernames1794355201000 } from './migrations/1794355201000-normalize-usernames';
+import { RecoverableSystemAuthorization1794355200000 } from './migration-recovery/authorization-recovery';
 import { entities } from './entity-registry';
 import { InitialFramework1794268800000 } from './migrations/1794268800000-initial-framework';
 
@@ -42,7 +45,12 @@ export function createDataSource(
     supportBigNumbers: true,
     bigNumberStrings: true,
     entities,
-    migrations: [InitialFramework1794268800000],
+    migrations: [
+      InitialFramework1794268800000,
+      RecoverableSystemAuthorization1794355200000,
+      NormalizeUsernames1794355201000,
+      MenuIcons1794355202000,
+    ],
     migrationsTableName: 'sys_migrations',
     synchronize: false,
     migrationsRun: false,

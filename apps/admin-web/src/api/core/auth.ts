@@ -9,7 +9,20 @@ export async function loginApi(data: AuthApi.LoginParams) {
   return requestClient.post<AuthApi.LoginResult>('/auth/login', {
     username: data.username,
     password: data.password,
+    captchaToken: data.captchaToken,
   });
+}
+export function createLoginCaptchaApi() {
+  return requestClient.post<
+    components['schemas']['LoginCaptchaChallengeResponse']
+  >('/auth/captcha/challenge', {});
+}
+export function verifyLoginCaptchaApi(
+  data: components['schemas']['VerifyLoginCaptchaDto'],
+) {
+  return requestClient.post<
+    components['schemas']['LoginCaptchaVerifyResponse']
+  >('/auth/captcha/verify', data);
 }
 let refreshing: Promise<string> | undefined;
 export function refreshTokenApi(): Promise<string> {

@@ -314,6 +314,7 @@ function handleCustomPreferencesUpdate(updates: CustomPreferencesRecord) {
           <VbenIconButton
             :disabled="!mergedDiffPreference"
             :tooltip="$t('preferences.resetTip')"
+            :aria-label="$t('preferences.resetTitle')"
             class="relative"
             @click="handleReset"
           >

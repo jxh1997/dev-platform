@@ -68,8 +68,11 @@ function nameView(name: string) {
 <template>
   <div class="flex w-full flex-wrap justify-between">
     <template v-for="theme in THEME_PRESET" :key="theme.name">
-      <div
+      <button
+        type="button"
         class="flex cursor-pointer flex-col"
+        :aria-label="nameView(theme.name)"
+        :aria-pressed="modelValue === theme.name"
         @click="modelValue = theme.name"
       >
         <div
@@ -81,7 +84,7 @@ function nameView(name: string) {
         <div class="mt-2 text-center text-xs text-muted-foreground">
           {{ nameView(theme.name) }}
         </div>
-      </div>
+      </button>
     </template>
 
     <SwitchItem

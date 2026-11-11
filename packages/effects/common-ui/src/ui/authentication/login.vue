@@ -18,6 +18,8 @@ import ThirdPartyLogin from './third-party-login.vue';
 
 interface Props extends AuthenticationProps {
   formSchema?: VbenFormSchema[];
+  /** 允许应用按实例和访问来源隔离记住账号，不保存密码。 */
+  usernameStorageKey?: string;
 }
 
 defineOptions({
@@ -40,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   submitButtonText: '',
   subTitle: '',
   title: '',
+  usernameStorageKey: '',
 });
 
 const emit = defineEmits<{
@@ -58,20 +61,31 @@ const [Form, formApi] = useVbenForm(
 );
 const router = useRouter();
 
-const REMEMBER_ME_KEY = `REMEMBER_ME_USERNAME_${location.hostname}`;
+const REMEMBER_ME_KEY =
+  props.usernameStorageKey || `REMEMBER_ME_USERNAME_${location.hostname}`;
 
-const localUsername = localStorage.getItem(REMEMBER_ME_KEY) || '';
+let localUsername = '';
+try {
+  localUsername = localStorage.getItem(REMEMBER_ME_KEY) || '';
+} catch {
+  /* 浏览器禁止存储时仍允许登录。 */
+}
 
 const rememberMe = ref(!!localUsername);
 
 async function handleSubmit() {
+  if (props.loading) return;
   const { valid } = await formApi.validate();
   const values = await formApi.getValues();
   if (valid) {
-    localStorage.setItem(
-      REMEMBER_ME_KEY,
-      rememberMe.value ? values?.username : '',
-    );
+    if (props.loading) return;
+    try {
+      if (rememberMe.value)
+        localStorage.setItem(REMEMBER_ME_KEY, values?.username ?? '');
+      else localStorage.removeItem(REMEMBER_ME_KEY);
+    } catch {
+      /* 记住账号失败不阻断认证，不回退保存密码或凭证。 */
+    }
     emit('submit', values);
   }
 }
@@ -109,6 +123,7 @@ defineExpose({
     </slot>
 
     <Form />
+    <slot name="captcha"></slot>
 
     <div
       v-if="showRememberMe || showForgetPassword"

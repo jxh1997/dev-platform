@@ -9,9 +9,13 @@ import {
   Public,
 } from '../common/http';
 import { AuthService } from './auth.service';
+import { LoginCaptchaService } from './login-captcha.service';
 import {
   ChangePasswordDto,
   LoginDto,
+  LoginCaptchaChallengeResponse,
+  LoginCaptchaVerifyResponse,
+  VerifyLoginCaptchaDto,
   MenuResponse,
   SuccessResponse,
   TokenResponse,
@@ -21,7 +25,52 @@ import {
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly captcha: LoginCaptchaService,
+  ) {}
+  @Public()
+  @Post('captcha/challenge')
+  @HttpCode(200)
+  @ApiOkResponse({ type: LoginCaptchaChallengeResponse })
+  challenge(
+    @CurrentRequest() req: AppRequest,
+    @Res({ passthrough: true }) res: Response,
+  ): LoginCaptchaChallengeResponse {
+    this.origin(req);
+    const result = this.captcha.challenge(
+      (req.cookies as Record<string, string>).dp_captcha,
+    );
+    res.cookie('dp_captcha', result.browser, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.APP_ENV === 'production',
+      path: '/api/v1/auth',
+      maxAge: 120_000,
+    });
+    return { challengeId: result.challengeId, expiresAt: result.expiresAt };
+  }
+  @Public()
+  @Post('captcha/verify')
+  @HttpCode(200)
+  @ApiOkResponse({ type: LoginCaptchaVerifyResponse })
+  verifyCaptcha(
+    @Body() dto: VerifyLoginCaptchaDto,
+    @CurrentRequest() req: AppRequest,
+    @Res({ passthrough: true }) res: Response,
+  ): LoginCaptchaVerifyResponse {
+    this.origin(req);
+    const browser = (req.cookies as Record<string, string>).dp_captcha;
+    const result = this.captcha.verify(dto.challengeId, dto.progress, browser);
+    res.cookie('dp_captcha', browser, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.APP_ENV === 'production',
+      path: '/api/v1/auth',
+      maxAge: 120_000,
+    });
+    return result;
+  }
   private cookie(res: Response, value: string) {
     res.cookie('dp_refresh', value, {
       httpOnly: true,
@@ -53,6 +102,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     this.origin(req);
+    this.captcha.consume(
+      dto.captchaToken,
+      (req.cookies as Record<string, string>).dp_captcha,
+    );
     const result = await this.auth.login(
       dto.username,
       dto.password,
@@ -120,17 +173,19 @@ export class AuthController {
   @Identity()
   @Get('me')
   @ApiOkResponse({ type: UserResponse })
-  me(@CurrentRequest() req: AppRequest): UserResponse {
+  async me(@CurrentRequest() req: AppRequest): Promise<UserResponse> {
     const p = req.principal;
     return {
       userId: p.userId,
       username: p.username,
       realName: p.realName,
-      roles: ['operator'],
+      roles: p.roles,
+      isSuperAdmin: p.isSuperAdmin,
       mustChangePassword: p.mustChangePassword,
       homePath: p.mustChangePassword
         ? '/auth/change-password'
-        : '/demo/records',
+        : ((await this.auth.menus(p)).find((m) => m.type === 'page')?.path ??
+          '/account/sessions'),
     };
   }
   @ApiBearerAuth()
@@ -146,18 +201,39 @@ export class AuthController {
   @Identity()
   @Get('menus')
   @ApiOkResponse({ type: MenuResponse, isArray: true })
-  menus(@CurrentRequest() req: AppRequest): MenuResponse[] {
-    if (
-      req.principal.mustChangePassword ||
-      !req.principal.permissions['demo:record:list']
-    )
-      return [];
+  async menus(@CurrentRequest() req: AppRequest): Promise<MenuResponse[]> {
+    const p = req.principal;
+    if (p.mustChangePassword) return [];
+    const menus = await this.auth.menus(p);
+    const build = (parentId: string | null): MenuResponse[] =>
+      menus
+        .filter((m) => m.parentId === parentId)
+        .map((m) => ({
+          name: m.name,
+          path: m.path,
+          component:
+            m.type === 'directory'
+              ? 'BasicLayout'
+              : m.type === 'link'
+                ? 'IFrameView'
+                : m.component,
+          meta: {
+            title: m.title,
+            icon: m.icon,
+            order: m.sort,
+            hideInMenu: !m.visible,
+            ...(m.type === 'link' ? { link: m.path } : {}),
+          },
+          children: build(m.id),
+        }));
     return [
+      ...build(null),
       {
-        name: 'Records',
-        path: '/demo/records',
-        component: '/demo/records/index',
-        meta: { title: '设备台账', icon: 'lucide:database' },
+        name: 'AccountSessions',
+        path: '/account/sessions',
+        component: '/system/sessions/index',
+        meta: { title: '我的会话', icon: 'lucide:shield' },
+        children: [],
       },
     ];
   }

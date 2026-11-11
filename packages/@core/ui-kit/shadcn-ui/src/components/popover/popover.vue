@@ -22,6 +22,7 @@ interface Props extends PopoverRootProps {
   contentClass?: ClassType;
   contentProps?: PopoverContentProps;
   triggerClass?: ClassType;
+  triggerAsChild?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -34,6 +35,7 @@ const delegatedProps = computed(() => {
     contentClass: _,
     contentProps: _cProps,
     triggerClass: _tClass,
+    triggerAsChild: _tAsChild,
     ...delegated
   } = props;
 
@@ -45,16 +47,15 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 <template>
   <PopoverRoot v-bind="forwarded">
-    <PopoverTrigger :class="triggerClass">
+    <PopoverTrigger :class="triggerClass" :as-child="triggerAsChild">
       <slot name="trigger"></slot>
-
-      <PopoverContent
-        :class="contentClass"
-        class="side-content z-popup"
-        v-bind="contentProps"
-      >
-        <slot></slot>
-      </PopoverContent>
     </PopoverTrigger>
+    <PopoverContent
+      :class="contentClass"
+      class="side-content z-popup"
+      v-bind="contentProps"
+    >
+      <slot></slot>
+    </PopoverContent>
   </PopoverRoot>
 </template>

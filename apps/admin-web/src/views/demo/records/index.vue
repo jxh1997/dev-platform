@@ -143,7 +143,12 @@ onUnmounted(() => {
         style="width: 100%"
       >
         <template #empty
-          ><ElEmpty description="暂无设备记录，可新增设备或调整筛选"
+          ><ElEmpty
+            :description="
+              allowed('create')
+                ? '暂无设备记录，可新增设备或调整筛选'
+                : '暂无设备记录，可调整筛选'
+            "
         /></template>
         <ElTableColumn
           prop="code"

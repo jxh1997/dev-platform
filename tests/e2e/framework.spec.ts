@@ -1,9 +1,18 @@
+import { completeLoginSlider } from './login-helper';
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
 import { hash } from 'bcryptjs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { createDataSource, User, UserPermission } =
+const {
+  createDataSource,
+  User,
+  UserRole,
+  Role,
+  RolePermission,
+  RoleMenu,
+  Menu,
+} =
   require('../../dist/packages/database/src') as typeof import('../../packages/database/src');
 if (
   process.env.DB_DATABASE !== 'dev_platform_test' ||
@@ -14,6 +23,7 @@ const db = createDataSource();
 const username = `e2e_${randomUUID().slice(0, 8)}`;
 const password = randomUUID().slice(0, 12);
 let userId = '';
+let roleId = '';
 test.beforeAll(async () => {
   await db.initialize();
   const user = await db.getRepository(User).save({
@@ -25,10 +35,24 @@ test.beforeAll(async () => {
     securityVersion: 1,
   });
   userId = user.id;
+  await db.getRepository(Role).insert({
+    code: username,
+    name: '工程验证角色',
+    enabled: true,
+    isSuperAdmin: false,
+    version: 1,
+  });
+  const role = await db.getRepository(Role).findOneByOrFail({ code: username });
+  roleId = role.id;
+  await db.getRepository(UserRole).insert({ userId, roleId });
   for (const action of ['list', 'read', 'create', 'update', 'delete'])
     await db
-      .getRepository(UserPermission)
-      .save({ userId, code: `demo:record:${action}`, scope: 'SELF' });
+      .getRepository(RolePermission)
+      .insert({ roleId, code: `demo:record:${action}`, scope: 'SELF' });
+  const menu = await db
+    .getRepository(Menu)
+    .findOneByOrFail({ code: 'records' });
+  await db.getRepository(RoleMenu).insert({ roleId, menuId: menu.id });
 });
 test.afterAll(async () => {
   if (userId) {
@@ -37,10 +61,14 @@ test.afterAll(async () => {
       'sys_audit',
       'sys_session',
       'sys_user_permission',
+      'sys_user_role',
     ])
       await db.query(`DELETE FROM ${table} WHERE user_id = ?`, [userId]);
     await db.query('DELETE FROM demo_record WHERE created_by = ?', [userId]);
     await db.getRepository(User).delete({ id: userId });
+    await db.getRepository(RolePermission).delete({ roleId });
+    await db.getRepository(RoleMenu).delete({ roleId });
+    await db.getRepository(Role).delete({ id: roleId });
   }
   if (db.isInitialized) await db.destroy();
 });
@@ -57,6 +85,7 @@ test('真实登录、台账读写、刷新恢复与删除', async ({ page }) => 
   await page.goto('/');
   await page.getByPlaceholder('请输入账号').fill(username);
   await page.getByPlaceholder('请输入密码', { exact: true }).fill(password);
+  await completeLoginSlider(page);
   await page.getByRole('button', { name: 'login', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: '设备台账', exact: true }),
@@ -156,6 +185,7 @@ test('6 位新密码修改、确认校验和重新登录', async ({ page }) => {
   await page.goto('/auth/login');
   await page.getByPlaceholder('请输入账号').fill(username);
   await page.getByPlaceholder('请输入密码', { exact: true }).fill(password);
+  await completeLoginSlider(page);
   await page.getByRole('button', { name: 'login', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: '设备台账', exact: true }),
@@ -182,6 +212,7 @@ test('6 位新密码修改、确认校验和重新登录', async ({ page }) => {
   await expect(page.getByPlaceholder('请输入账号')).toBeVisible();
   await page.getByPlaceholder('请输入账号').fill(username);
   await page.getByPlaceholder('请输入密码', { exact: true }).fill('Abc123');
+  await completeLoginSlider(page);
   await page.getByRole('button', { name: 'login', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: '设备台账', exact: true }),

@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 import { config } from 'dotenv';
 if (!process.env.CI) config({ path: '.env.test', override: true, quiet: true });
 if (process.env.APP_ENV !== 'test' || process.env.INSTANCE_ID !== 'dev-platform-test') throw new Error('E2E 必须使用专用测试环境');
-const webPort = Number(process.env.E2E_WEB_PORT ?? 5777);
+const webPort = Number(process.env.E2E_WEB_PORT ?? 5778);
 if (!Number.isInteger(webPort) || webPort < 1024 || webPort > 65535) throw new Error('E2E_WEB_PORT 无效');
 const webURL = `http://127.0.0.1:${webPort}`;
 process.env.APP_ORIGIN = webURL;

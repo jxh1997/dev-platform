@@ -3,7 +3,8 @@ import { DataSource, IsNull } from 'typeorm';
 import { compare, hash } from 'bcryptjs';
 import { sign, verify, TokenExpiredError, type JwtPayload } from 'jsonwebtoken';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
-import { User, UserPermission, Session, Audit } from '../../../database/src';
+import { User, Session, Audit, Menu } from '../../../database/src';
+import { resolveAuthorization } from './authorization';
 import { fail, type Principal } from '../common/http';
 
 const tokenHash = (value: string) =>
@@ -115,9 +116,7 @@ export class AuthService {
       session.securityVersion !== user.securityVersion
     )
       fail(401, 'AUTH_SESSION_REVOKED', '会话已失效，请重新登录');
-    const grants = await this.db
-      .getRepository(UserPermission)
-      .findBy({ userId: user.id });
+    const authorization = await resolveAuthorization(this.db.manager, user.id);
     return {
       userId: user.id,
       sessionId: session.id,
@@ -125,8 +124,41 @@ export class AuthService {
       mustChangePassword: user.mustChangePassword,
       username: user.username,
       realName: user.realName,
-      permissions: Object.fromEntries(grants.map((g) => [g.code, g.scope])),
+      ...authorization,
     };
+  }
+
+  async menus(p: Principal) {
+    if (p.mustChangePassword) return [];
+    const assigned: { menuId: string }[] = await this.db.query(
+      `SELECT DISTINCT rm.menu_id AS menuId FROM sys_role_menu rm
+      JOIN sys_role r ON r.id=rm.role_id AND r.enabled=1 JOIN sys_user_role ur ON ur.role_id=r.id WHERE ur.user_id=?`,
+      [p.userId],
+    );
+    const ids = new Set(assigned.map((row) => row.menuId));
+    const menus = await this.db
+      .getRepository(Menu)
+      .find({ order: { sort: 'ASC', id: 'ASC' } });
+    const allowed = new Map(
+      menus
+        .filter(
+          (m) =>
+            ids.has(m.id) &&
+            m.enabled &&
+            m.type !== 'button' &&
+            (m.type === 'directory' || Boolean(p.permissions[m.permission])),
+        )
+        .map((m) => [m.id, m]),
+    );
+    // 没有分配、停用或没有权限的父级不可借子节点绕过。
+    const connected = (m: Menu, seen = new Set<string>()): boolean => {
+      if (seen.has(m.id)) return false;
+      seen.add(m.id);
+      if (!m.parentId) return true;
+      const parent = allowed.get(m.parentId);
+      return Boolean(parent && connected(parent, seen));
+    };
+    return menus.filter((m) => allowed.has(m.id) && connected(m));
   }
 
   async refresh(cookie: string | undefined) {
@@ -155,6 +187,7 @@ export class AuthService {
         tokenHash(value!) !== session.refreshHash
       ) {
         session.revokedAt = new Date();
+        session.revokedReason = 'refresh-reuse';
         await em.save(session);
         return null;
       }
@@ -213,6 +246,7 @@ export class AuthService {
           : parts && tokenHash(parts[1]!) === session.refreshHash;
         if (!allowed) return;
         session.revokedAt = new Date();
+        session.revokedReason = 'logout';
         await em.save(session);
         await em.insert(Audit, {
           userId: session.userId,
@@ -260,12 +294,13 @@ export class AuthService {
           passwordHash,
           mustChangePassword: false,
           securityVersion: user.securityVersion + 1,
+          version: user.version + 1,
         },
       );
       await em.update(
         Session,
         { userId: user.id, revokedAt: IsNull() },
-        { revokedAt: new Date() },
+        { revokedAt: new Date(), revokedReason: 'password-change' },
       );
       await em.insert(Audit, {
         userId: user.id,

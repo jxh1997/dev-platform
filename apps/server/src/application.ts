@@ -129,7 +129,20 @@ export function validateRuntime() {
     .object({
       APP_ENV: z.enum(['development', 'test', 'production']),
       INSTANCE_ID: z.string().min(3),
-      APP_ORIGIN: z.string().url(),
+      APP_ORIGIN: z
+        .string()
+        .url()
+        .refine((value) => {
+          // 只接受浏览器 Origin 的规范格式，防止路径／尾斜线使严格来源校验永远失败。
+          try {
+            const url = new URL(value);
+            return (
+              ['http:', 'https:'].includes(url.protocol) && url.origin === value
+            );
+          } catch {
+            return false;
+          }
+        }),
       JWT_SECRET: z.string().min(32),
       PORT: z.coerce.number().int().min(1).max(65535),
       HOST: z.string().min(1),
@@ -186,7 +199,8 @@ export async function createApplication(exportOnly = false) {
     }
     if (
       req.path === '/api/v1/auth/login' ||
-      req.path === '/api/v1/auth/refresh'
+      req.path === '/api/v1/auth/refresh' ||
+      req.path.startsWith('/api/v1/auth/captcha/')
     ) {
       const now = Date.now();
       for (const [key, value] of limits)
@@ -194,15 +208,24 @@ export async function createApplication(exportOnly = false) {
       // 服务仅部署单实例；按来源和账号分别限流，不信任客户端转发头。
       const account =
         typeof req.body?.username === 'string'
-          ? req.body.username.slice(0, 64)
+          ? req.body.username.trim().toLowerCase().slice(0, 64)
           : '';
-      const keys = [`ip:${req.ip}`, ...(account ? [`account:${account}`] : [])];
+      const captcha = req.path.startsWith('/api/v1/auth/captcha/');
+      const keys = [
+        captcha ? `captcha:ip:${req.ip}` : `ip:${req.ip}`,
+        ...(account && !captcha ? [`account:${account}`] : []),
+      ];
       for (const key of keys) {
         const slot = limits.get(key) ?? { count: 0, until: now + 60000 };
         slot.count++;
         limits.set(key, slot);
         if (
-          slot.count > (key.startsWith('ip:') ? 60 : 10) ||
+          slot.count >
+            (key.startsWith('captcha:')
+              ? 120
+              : key.startsWith('ip:')
+                ? 60
+                : 10) ||
           limits.size > 10000
         ) {
           res.setHeader('Retry-After', '60');

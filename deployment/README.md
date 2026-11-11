@@ -1,5 +1,9 @@
 # 部署与运维：M0
 
+## 日常开发
+
+统一使用 `pnpm dev`、`pnpm dev:status`、`pnpm dev:restart`、`pnpm dev:stop`，详细端口与启动项见 [本地环境说明](../docs/development/local-environment.md)。开发入口为 `http://127.0.0.1:5777`；8080 容器演示与测试数据库按需启动。
+
 ## 开发数据库
 
 仓库根目录运行 `pnpm env:init`，再执行 `docker compose --env-file .env -f deployment/compose.dev.yaml up -d --wait`。MySQL 仅暴露回环端口 13306，命名卷独立保存数据。测试使用 `.env.test` 和 `compose.test.yaml`（13307），不得共享开发数据库与凭据。已有卷的密码不会因修改环境文件自动更新，需走明确的数据库改密流程。
@@ -22,7 +26,7 @@ docker compose --env-file deployment/.env -f deployment/compose.yaml run --rm \
 unset INIT_ADMIN_USERNAME INIT_ADMIN_PASSWORD
 ```
 
-管理员不能重复初始化，首次登录强制改密。`seed` 是只读基线检查，不每次覆盖授权。
+管理员不能重复初始化，首次登录强制改密。`seed` 显式同步代码注册的操作权限并补齐系统超级管理员权限，不覆盖客户角色和导航。升级后执行一次 `pnpm db:seed`（容器使用同镜像的 CLI seed），不得重复初始化管理员。
 
 ## 健康与重启
 

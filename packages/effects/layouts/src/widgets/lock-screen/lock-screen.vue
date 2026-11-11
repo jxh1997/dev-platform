@@ -91,7 +91,8 @@ useScrollLock();
   <div class="fixed z-2000 size-full bg-background">
     <transition name="slide-left">
       <div v-show="!showUnlockForm" class="size-full">
-        <div
+        <button
+          type="button"
           class="group fixed top-6 left-1/2 z-2001 flex-col-center -translate-x-1/2 cursor-pointer text-xl font-semibold text-foreground/80 hover:text-foreground"
           @click="toggleUnlockForm"
         >
@@ -99,7 +100,7 @@ useScrollLock();
             class="size-5 transition-all duration-300 group-hover:scale-125"
           />
           <span>{{ $t('ui.widgets.lockScreen.unlock') }}</span>
-        </div>
+        </button>
         <div class="flex-center size-full">
           <div class="flex w-full justify-center gap-4 px-4 sm:gap-6 md:gap-8">
             <div

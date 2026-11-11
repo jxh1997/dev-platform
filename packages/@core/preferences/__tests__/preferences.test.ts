@@ -86,6 +86,34 @@ describe('preferences', () => {
     expect(preferenceManager.getPreferences()).toEqual(expected);
   });
 
+  it('restores cached visual preferences while retaining explicit application constraints', async () => {
+    vi.mocked(localStorage.getItem).mockImplementation((key) =>
+      key === 'shell-cache-preferences'
+        ? JSON.stringify({
+            value: {
+              theme: { mode: 'light' },
+              sidebar: { collapsed: true },
+              app: {
+                layout: 'header-nav',
+                authPageLayout: 'panel-left',
+                accessMode: 'frontend',
+              },
+            },
+          })
+        : null,
+    );
+    await preferenceManager.initPreferences({
+      namespace: 'shell-cache',
+      overrides: { app: { accessMode: 'backend' } },
+    });
+    const saved = preferenceManager.getPreferences();
+    expect(saved.theme.mode).toBe('light');
+    expect(saved.sidebar.collapsed).toBe(true);
+    expect(saved.app.layout).toBe('header-nav');
+    expect(saved.app.authPageLayout).toBe('panel-left');
+    expect(saved.app.accessMode).toBe('backend');
+  });
+
   it('updates theme mode correctly', () => {
     preferenceManager.updatePreferences({
       theme: {

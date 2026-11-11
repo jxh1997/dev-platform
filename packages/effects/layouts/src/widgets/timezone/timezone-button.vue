@@ -56,6 +56,7 @@ const handleClick = () => {
   <div>
     <VbenIconButton
       :tooltip="$t('ui.widgets.timezone.setTimezone')"
+      :aria-label="$t('ui.widgets.timezone.setTimezone')"
       class="hover:animate-[shrink_0.3s_ease-in-out]"
       @click="handleClick"
     >

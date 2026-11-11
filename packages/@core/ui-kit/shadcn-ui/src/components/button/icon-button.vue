@@ -9,6 +9,8 @@ import { cn } from '@vben-core/shared/utils';
 import { VbenTooltip } from '../tooltip';
 import VbenButton from './button.vue';
 
+defineOptions({ inheritAttrs: false });
+
 interface Props extends VbenButtonProps {
   class?: any;
   disabled?: boolean;
@@ -35,6 +37,7 @@ const showTooltip = computed(() => !!slots.tooltip || !!props.tooltip);
 <template>
   <VbenButton
     v-if="!showTooltip"
+    v-bind="$attrs"
     :class="cn('rounded-full', props.class)"
     :disabled="disabled"
     :variant="variant"
@@ -51,6 +54,7 @@ const showTooltip = computed(() => !!slots.tooltip || !!props.tooltip);
   >
     <template #trigger>
       <VbenButton
+        v-bind="$attrs"
         :class="cn('rounded-full', props.class)"
         :disabled="disabled"
         :variant="variant"

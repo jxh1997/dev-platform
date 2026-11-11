@@ -89,6 +89,104 @@
         ]
       }
     },
+    "/api/v1/auth/captcha/challenge": {
+      "post": {
+        "operationId": "AuthController_challenge",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/LoginCaptchaChallengeResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/captcha/verify": {
+      "post": {
+        "operationId": "AuthController_verifyCaptcha",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyLoginCaptchaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/LoginCaptchaVerifyResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/api/v1/auth/login": {
       "post": {
         "operationId": "AuthController_login",
@@ -798,6 +896,1402 @@
           "records"
         ]
       }
+    },
+    "/api/v1/system/users": {
+      "get": {
+        "operationId": "SystemController_users",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Object"
+                }
+              ]
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 20,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Object"
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/UsersPageResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      },
+      "post": {
+        "operationId": "SystemController_createUser",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedUserResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/users/{id}/update": {
+      "post": {
+        "operationId": "SystemController_editUser",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedUserResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/roles": {
+      "get": {
+        "operationId": "SystemController_roles",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Object"
+                }
+              ]
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 20,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Object"
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RolesPageResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      },
+      "post": {
+        "operationId": "SystemController_createRole",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedRoleResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/roles/{id}/update": {
+      "post": {
+        "operationId": "SystemController_editRole",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedRoleResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/roles/{id}/delete": {
+      "post": {
+        "operationId": "SystemController_deleteRole",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpectedVersion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/menus": {
+      "get": {
+        "operationId": "SystemController_menus",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Object"
+                }
+              ]
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 20,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Object"
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/MenusPageResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      },
+      "post": {
+        "operationId": "SystemController_createMenu",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMenuDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedMenuResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/menus/{id}/update": {
+      "post": {
+        "operationId": "SystemController_editMenu",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMenuDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedMenuResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/menus/{id}/delete": {
+      "post": {
+        "operationId": "SystemController_deleteMenu",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpectedVersion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/users/{id}": {
+      "get": {
+        "operationId": "SystemController_user",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedUserResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/users/{id}/assign-role": {
+      "post": {
+        "operationId": "SystemController_assignRoles",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignRolesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedUserResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/users/{id}/reset-password": {
+      "post": {
+        "operationId": "SystemController_resetPassword",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/roles/{id}/grants": {
+      "post": {
+        "operationId": "SystemController_grants",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleGrantsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ManagedRoleResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/permissions": {
+      "get": {
+        "operationId": "SystemController_permissions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PermissionResponse"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/page-components": {
+      "get": {
+        "operationId": "SystemController_components",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PageComponentResponse"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/users/{id}/sessions": {
+      "get": {
+        "operationId": "SystemController_sessions",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SessionResponse"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/system/users/{id}/revoke-session": {
+      "post": {
+        "operationId": "SystemController_revoke",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionIdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/auth/sessions": {
+      "get": {
+        "operationId": "SessionsController_sessions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SessionResponse"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "sessions"
+        ]
+      }
+    },
+    "/api/v1/auth/sessions/revoke": {
+      "post": {
+        "operationId": "SessionsController_revoke",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionIdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "sessions"
+        ]
+      }
     }
   },
   "info": {
@@ -828,6 +2322,55 @@
           "status"
         ]
       },
+      "LoginCaptchaChallengeResponse": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "challengeId",
+          "expiresAt"
+        ]
+      },
+      "VerifyLoginCaptchaDto": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string"
+          },
+          "progress": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "challengeId",
+          "progress"
+        ]
+      },
+      "LoginCaptchaVerifyResponse": {
+        "type": "object",
+        "properties": {
+          "captchaToken": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "captchaToken",
+          "expiresAt"
+        ]
+      },
       "LoginDto": {
         "type": "object",
         "properties": {
@@ -836,11 +2379,16 @@
           },
           "password": {
             "type": "string"
+          },
+          "captchaToken": {
+            "type": "string",
+            "description": "滑块校验返回的浏览器绑定、一次性登录凭证"
           }
         },
         "required": [
           "username",
-          "password"
+          "password",
+          "captchaToken"
         ]
       },
       "TokenResponse": {
@@ -886,6 +2434,9 @@
       "UserResponse": {
         "type": "object",
         "properties": {
+          "isSuperAdmin": {
+            "type": "boolean"
+          },
           "userId": {
             "type": "string"
           },
@@ -909,6 +2460,7 @@
           }
         },
         "required": [
+          "isSuperAdmin",
           "userId",
           "username",
           "realName",
@@ -920,6 +2472,15 @@
       "MenuMeta": {
         "type": "object",
         "properties": {
+          "order": {
+            "type": "number"
+          },
+          "hideInMenu": {
+            "type": "boolean"
+          },
+          "link": {
+            "type": "string"
+          },
           "title": {
             "type": "string"
           },
@@ -935,6 +2496,12 @@
       "MenuResponse": {
         "type": "object",
         "properties": {
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuResponse"
+            }
+          },
           "name": {
             "type": "string"
           },
@@ -949,6 +2516,7 @@
           }
         },
         "required": [
+          "children",
           "name",
           "path",
           "component",
@@ -1115,6 +2683,601 @@
           "id",
           "version",
           "deleted"
+        ]
+      },
+      "ManagedUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "realName": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "mustChangePassword": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "number"
+          },
+          "roleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isSuperAdmin": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "realName",
+          "enabled",
+          "mustChangePassword",
+          "version",
+          "roleIds",
+          "isSuperAdmin"
+        ]
+      },
+      "UsersPageResponse": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManagedUserResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "list",
+          "total",
+          "page",
+          "pageSize"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "realName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 12
+          }
+        },
+        "required": [
+          "username",
+          "realName",
+          "password"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          },
+          "realName": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "GrantDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "ALL",
+              "SELF"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "scope"
+        ]
+      },
+      "ManagedRoleResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "isSuperAdmin": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "number"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GrantDto"
+            }
+          },
+          "menuIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "enabled",
+          "isSuperAdmin",
+          "version",
+          "permissions",
+          "menuIds"
+        ]
+      },
+      "RolesPageResponse": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManagedRoleResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "list",
+          "total",
+          "page",
+          "pageSize"
+        ]
+      },
+      "CreateRoleDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ]
+      },
+      "UpdateRoleDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "ExpectedVersion": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "ManagedMenuResponse": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "default": "lucide:folder"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "permission": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "directory",
+              "page",
+              "button",
+              "link"
+            ]
+          },
+          "sort": {
+            "type": "number"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "title",
+          "component",
+          "permission",
+          "parentId",
+          "type",
+          "sort",
+          "visible",
+          "enabled",
+          "id",
+          "code",
+          "version"
+        ]
+      },
+      "MenusPageResponse": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManagedMenuResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "list",
+          "total",
+          "page",
+          "pageSize"
+        ]
+      },
+      "CreateMenuDto": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "default": "lucide:folder"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "permission": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "directory",
+              "page",
+              "button",
+              "link"
+            ]
+          },
+          "sort": {
+            "type": "number"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "title",
+          "component",
+          "permission",
+          "parentId",
+          "type",
+          "sort",
+          "visible",
+          "enabled",
+          "code"
+        ]
+      },
+      "UpdateMenuDto": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "default": "lucide:folder"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "permission": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "directory",
+              "page",
+              "button",
+              "link"
+            ]
+          },
+          "sort": {
+            "type": "number"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "title",
+          "component",
+          "permission",
+          "parentId",
+          "type",
+          "sort",
+          "visible",
+          "enabled",
+          "version"
+        ]
+      },
+      "AssignRolesDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          },
+          "roleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "version",
+          "roleIds"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 12
+          }
+        },
+        "required": [
+          "version",
+          "password"
+        ]
+      },
+      "RoleGrantsDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          },
+          "permissions": {
+            "description": "全量替换角色操作权限及各操作范围",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GrantDto"
+            }
+          },
+          "menuIds": {
+            "description": "全量替换导航，不隐式增加操作权限",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "version",
+          "permissions",
+          "menuIds"
+        ]
+      },
+      "PermissionResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "title"
+        ]
+      },
+      "PageComponentResponse": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "permission": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "path",
+          "permission"
+        ]
+      },
+      "SessionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "current": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "revokedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "revokedReason": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "current",
+          "expiresAt",
+          "revokedAt",
+          "revokedReason"
+        ]
+      },
+      "SessionIdDto": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sessionId"
         ]
       }
     }

@@ -125,11 +125,16 @@ watch(
 const altView = computed(() => (isWindowsOs() ? 'Alt' : '⌥'));
 
 const enableLogoutShortcutKey = computed(() => {
-  return props.enableShortcutKey && globalLogoutShortcutKey.value;
+  return enableShortcutKey.value && globalLogoutShortcutKey.value;
 });
 
 const enableLockScreenShortcutKey = computed(() => {
-  return props.enableShortcutKey && globalLockScreenShortcutKey.value;
+  return (
+    enableShortcutKey.value &&
+    preferences.widget.lockScreen &&
+    globalLockScreenShortcutKey.value &&
+    !accessStore.isLockScreen
+  );
 });
 
 const enableShortcutKey = computed(() => {
@@ -161,7 +166,7 @@ function handleOpenSettings() {
   refPreferences.value?.open();
 }
 
-if (enableShortcutKey.value) {
+{
   const keys = useMagicKeys();
   const logoutKey = keys['Alt+KeyQ'];
   const lockKey = keys['Alt+KeyL'];
@@ -213,7 +218,11 @@ if (enableShortcutKey.value) {
   />
 
   <DropdownMenu v-model:open="openPopover">
-    <DropdownMenuTrigger ref="refTrigger" :disabled="props.trigger === 'hover'">
+    <DropdownMenuTrigger
+      ref="refTrigger"
+      :aria-label="text ? `${text}：用户菜单` : '用户菜单'"
+      :disabled="props.trigger === 'hover'"
+    >
       <div class="mr-2 ml-1 cursor-pointer rounded-full p-1.5 hover:bg-accent">
         <div class="flex-center hover:text-accent-foreground">
           <VbenAvatar :alt="text" :src="avatar" class="size-8" dot />
