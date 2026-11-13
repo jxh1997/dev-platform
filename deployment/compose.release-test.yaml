@@ -1,0 +1,73 @@
+name: dev-platform-release-validation
+x-runtime: &runtime
+  image: dev-platform-server:dp0023-os
+  environment:
+    APP_ENV: test
+    INSTANCE_ID: dev-platform-release-test
+    APP_ORIGIN: http://127.0.0.1:5779
+    JWT_SECRET: ${JWT_SECRET:?required}
+    DB_USERNAME: ${DB_USERNAME:?required}
+    DB_PASSWORD: ${DB_PASSWORD:?required}
+    DB_DATABASE: ${DB_DATABASE:?required}
+    DB_HOST: mysql
+    DB_PORT: 3306
+    HOST: 0.0.0.0
+    PORT: 3000
+  init: true
+  networks: [isolated]
+services:
+  mysql:
+    image: mysql:8.4.7
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:?required}
+      MYSQL_USER: ${DB_USERNAME:?required}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?required}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?required}
+      TZ: UTC
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_as_cs", "--default-time-zone=+00:00"]
+    volumes: ["release-mysql-data:/var/lib/mysql"]
+    networks: [isolated]
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -u$$MYSQL_USER -e 'SELECT 1' $$MYSQL_DATABASE >/dev/null 2>&1"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  migrate:
+    <<: *runtime
+    command: ["node", "dist/packages/database/src/cli.js", "run"]
+    depends_on:
+      mysql: { condition: service_healthy }
+    restart: "no"
+  server:
+    <<: *runtime
+    command: ["node", "dist/apps/server/src/main.js"]
+    ports: ["127.0.0.1:4312:3000"]
+    volumes: ["../.release/tls:/verification/tls:ro"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/v1/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: ["/tmp"]
+  web:
+    image: dev-platform-web:dp0023-os
+    ports: ["127.0.0.1:5779:8080"]
+    networks: [isolated]
+    depends_on:
+      server: { condition: service_healthy }
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+networks:
+  isolated:
+volumes:
+  release-mysql-data:

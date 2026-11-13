@@ -4,7 +4,7 @@ ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 WORKDIR /app
-COPY ["package.json", "pnpm-workspace.yaml", "pnpm-lock.yaml", ".npmrc", "./"]
+COPY ["package.json", "pnpm-workspace.yaml", "pnpm-lock.yaml", "./"]
 COPY ["apps/admin-web/package.json", "apps/admin-web/"]
 COPY ["apps/server/package.json", "apps/server/"]
 COPY ["packages/@core/base/design/package.json", "packages/@core/base/design/"]
@@ -47,14 +47,21 @@ COPY ["internal/tsconfig/package.json", "internal/tsconfig/"]
 COPY ["internal/vite-config/package.json", "internal/vite-config/"]
 COPY ["scripts/turbo-run/package.json", "scripts/turbo-run/"]
 COPY ["scripts/vsh/package.json", "scripts/vsh/"]
-RUN pnpm install --frozen-lockfile --ignore-scripts
+COPY patches/ ./patches/
+RUN rm -f .npmrc && pnpm install --registry=https://registry.npmjs.org/ --frozen-lockfile --ignore-scripts
 COPY . .
 RUN pnpm rebuild && pnpm -r --if-present run stub
-RUN pnpm build:server
-FROM node:24.22.2-bookworm-slim
+RUN pnpm build:server && node scripts/prepare-release.mjs server /runtime
+FROM node:24.22.2-bookworm-slim AS runtime-files
+COPY scripts/prepare-node-runtime.mjs /prepare-node-runtime.mjs
+RUN node /prepare-node-runtime.mjs /runtime-rootfs
+FROM scratch
 ENV NODE_ENV=production
+ENV PATH=/usr/local/bin
+ENV TZ=UTC
+COPY --from=runtime-files /runtime-rootfs/ /
 WORKDIR /app
-COPY --from=build --chown=node:node /app /app
+COPY --from=build --chown=1000:1000 /runtime/ /app/
 USER node
 EXPOSE 3000
 CMD ["node", "dist/apps/server/src/main.js"]

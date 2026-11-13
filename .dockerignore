@@ -17,3 +17,10 @@ backups
 uploads
 deployment/data
 deployment/volumes
+
+.release
+.agents
+.codegraph
+
+.npmrc
+.npmrc.*

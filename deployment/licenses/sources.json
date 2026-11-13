@@ -1,0 +1,38 @@
+[
+  {
+    "package": "@tokenizer/token@0.3.0",
+    "declaredLicense": "MIT",
+    "file": "deployment/licenses/@tokenizer__token@0.3.0/README.md",
+    "source": "https://raw.githubusercontent.com/Borewit/tokenizer-token/e068a455370090f44c757946b8571bb3fb1f117e/README.md",
+    "sourceCommit": "e068a455370090f44c757946b8571bb3fb1f117e",
+    "sha256": "844148fa5d91a03c6ada823a207f43aabdcd4c79d73ceb2276571127787c9228"
+  },
+  {
+    "package": "cookie-signature@1.0.6",
+    "declaredLicense": "MIT",
+    "file": "deployment/licenses/cookie-signature@1.0.6/Readme.md",
+    "source": "https://raw.githubusercontent.com/visionmedia/node-cookie-signature/391b56cf44d88c493491b7e3fc53208cfb976d2a/Readme.md",
+    "sourceCommit": "391b56cf44d88c493491b7e3fc53208cfb976d2a",
+    "sha256": "1621ed10d0b2f865eb8608e0474a356cf7a9737a384b6593b61b30a9f6e50366"
+  },
+  {
+    "package": "typeorm@0.3.31",
+    "declaredLicense": "MIT",
+    "file": "deployment/licenses/typeorm@0.3.31/LICENSE",
+    "source": "https://raw.githubusercontent.com/typeorm/typeorm/797320375fb83b2e9af4a6455e0b1b4483be329d/LICENSE",
+    "sourceCommit": "797320375fb83b2e9af4a6455e0b1b4483be329d",
+    "sha256": "ad96032f32c48d3c8e1ec8918c94ec5bce32d23d80b80b03649dc7620569d173"
+  },
+  {
+    "package": "zod-defaults@0.1.3",
+    "declaredLicense": "MIT",
+    "file": "deployment/licenses/zod-defaults@0.1.3/README.md",
+    "source": "https://registry.npmjs.org/zod-defaults/-/zod-defaults-0.1.3.tgz#package/README.md",
+    "sha256": "2c2515e2faea0c5780fedde81abd380e53bf1563fcfb426153ac28436430ecd2",
+    "declarationOnly": true,
+    "standardLicenseText": "deployment/licenses/MIT.txt",
+    "standardSource": "https://spdx.org/licenses/MIT.json",
+    "standardSha256": "9f420f8e43bbd65bddb84463a5f96db1f030fc7ecd4f0b35523b9610e8c3fa21",
+    "note": "Publisher README explicitly declares MIT but omits the referenced LICENSE; retain its declaration and separately supply canonical terms without inventing attribution."
+  }
+]

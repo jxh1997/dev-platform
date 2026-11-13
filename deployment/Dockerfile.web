@@ -4,7 +4,7 @@ ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 WORKDIR /app
-COPY ["package.json", "pnpm-workspace.yaml", "pnpm-lock.yaml", ".npmrc", "./"]
+COPY ["package.json", "pnpm-workspace.yaml", "pnpm-lock.yaml", "./"]
 COPY ["apps/admin-web/package.json", "apps/admin-web/"]
 COPY ["apps/server/package.json", "apps/server/"]
 COPY ["packages/@core/base/design/package.json", "packages/@core/base/design/"]
@@ -47,11 +47,22 @@ COPY ["internal/tsconfig/package.json", "internal/tsconfig/"]
 COPY ["internal/vite-config/package.json", "internal/vite-config/"]
 COPY ["scripts/turbo-run/package.json", "scripts/turbo-run/"]
 COPY ["scripts/vsh/package.json", "scripts/vsh/"]
-RUN pnpm install --frozen-lockfile --ignore-scripts
+COPY patches/ ./patches/
+RUN rm -f .npmrc && pnpm install --registry=https://registry.npmjs.org/ --frozen-lockfile --ignore-scripts
 COPY . .
-RUN pnpm rebuild && pnpm -r --if-present run stub
-RUN cp apps/admin-web/.env.example apps/admin-web/.env && pnpm build:web
+RUN pnpm rebuild && pnpm -r --workspace-concurrency=1 --if-present run stub
+RUN cp apps/admin-web/.env.example apps/admin-web/.env && pnpm build:web --concurrency=1
 FROM nginxinc/nginx-unprivileged:1.28.0-alpine
+USER root
+RUN apk update && apk upgrade \
+    && nginx -v 2>&1 | grep -Eq 'nginx/1\.28\.' \
+    && mkdir -p /usr/share/devplatform \
+    && sha256sum /var/cache/apk/APKINDEX*.tar.gz > /usr/share/devplatform/apk-index-sha256.txt \
+    && rm -rf /var/cache/apk/* \
+    && apk info -v > /usr/share/devplatform/apk-versions.txt \
+    && cp /etc/apk/repositories /usr/share/devplatform/apk-repositories.txt \
+    && cp /lib/apk/db/installed /usr/share/devplatform/apk-installed.txt
+USER 101
 COPY deployment/nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/apps/admin-web/dist /usr/share/nginx/html
 EXPOSE 8080

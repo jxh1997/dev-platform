@@ -1,0 +1,31 @@
+{
+  "scope": "upstream advisory metadata; not a new image scan",
+  "advisories": [
+    {
+      "cve": "CVE-2026-100290",
+      "url": "https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=advisories/GLIBC-SA-2026-0028",
+      "retrievedDate": "2026-11-13",
+      "sha256": "a39a85d3cf0bf62bc8a34046beb920a8d0b8b4848eff660b042f0070f1f36a86",
+      "advisoryFields": [
+        "CVE-Id: CVE-2026-100290",
+        "Public-Date: 2026-09-08",
+        "Vulnerable-Commit: 3b0bdc723579a7c6df2cace0115a6ca0977d73f9 (2.2.4-631)",
+        "CVSS: CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L - 3.7"
+      ],
+      "fixCommitFieldPresent": false
+    },
+    {
+      "cve": "CVE-2026-115819",
+      "url": "https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=advisories/GLIBC-SA-2026-0027",
+      "retrievedDate": "2026-11-13",
+      "sha256": "b4e0c4cb7948aa955421b5f908be1c5340339f13eb78d59a80f15915fd6c3c0a",
+      "advisoryFields": [
+        "CVE-Id: CVE-2026-115819",
+        "Public-Date: 2026-11-11",
+        "Vulnerable-Commit: d64b6ad07585b8a37e5fecc9a47fcee766d52ede (2.2)",
+        "CVSS: CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:L - 4.8"
+      ],
+      "fixCommitFieldPresent": false
+    }
+  ]
+}

@@ -54,3 +54,6 @@ temp/
 /deployment/volumes/
 /uploads/
 /backups/
+
+# Local release artifacts and image scan archives
+/.release/

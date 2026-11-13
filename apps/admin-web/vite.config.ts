@@ -6,6 +6,7 @@ export default defineConfig(async () => {
   return {
     application: {},
     vite: {
+      build: { license: { fileName: 'third-party/bundled-licenses.json' } },
       optimizeDeps: {
         // Element Plus 的按需样式在懒加载页面转换后才出现，预先登记避免首次导航触发 504 重优化。
         include: ['element-plus', ...['alert', 'button', 'dialog', 'empty', 'form', 'form-item', 'input', 'message', 'message-box', 'option', 'pagination', 'select', 'table', 'table-column', 'tag'].map(name => `element-plus/es/components/${name}/style/css`)],
