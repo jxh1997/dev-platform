@@ -6,6 +6,16 @@
 
 原“基础工程规范与 AI 开发规范”已按职责拆入本目录及根目录，不再维护重复合订本。尚未存在的目录、脚本与公共能力均为实施目标。
 
+## 当前开发与验证入口
+
+- [开发 TODO](../TODO.md)：39个工作包的状态、批准批次与证据入口。
+- [完整开发计划](plans/2026-11-11-master-development-plan.md)：内部审查、差异待决、M1—M5步骤、依赖和完成条件。
+- [完整验证方案](verification/2026-11-11-master-validation.md)：分层验证、现有命令、AC01—AC50映射、缺陷与发布门槛。
+- [依赖现状审查（2026-11-12）](verification/2026-11-12-dependency-review.md)：当前审计、来源／许可盘点和待批准修复批次。
+- [编制基线快照](plans/2026-11-11-document-baseline.json)：40份源文档的提交与SHA-256；绑定编制前提交，不要求后续导航修改仍与旧摘要相同。
+
+上述计划创建于2026-11-11，2026-11-12完成整理；当前执行状态和批准范围统一以根目录TODO为准。既有单项计划和验证报告保留为历史依据，不作为第二份当前TODO；状态在根目录TODO维护，产品范围仍以产品方案为准。
+
 ## 阅读顺序
 
 - 人工开发：根目录 README → 产品基线 → 相关工程规范 → 模块开发指南。
@@ -50,3 +60,21 @@
 规范正文维护当前有效规则，不追加聊天记录、评审过程或 AI 长篇推理。代码变更证据保存在 PR、CI 或任务验证报告；验证报告不替代规范。已发布迁移与发布记录必须保留。
 
 产品运行所需的登录日志、业务审计和任务记录属于系统能力，与文档历史记录不同。
+
+- [路由依赖定向修复（2026-11-12）](verification/2026-11-12-router-dependency-fix.md)：A-003批准范围、测试与差分审计；其余依赖风险仍待处置。
+
+- [请求链依赖修复（2026-11-12）](verification/2026-11-12-request-dependency-fix.md)：B批批准、28条公告差分与验证结果；[剩余风险闭项计划](verification/2026-11-12-risk-closure-plan.md)。
+
+- [依赖与构建链修复（2026-11-12）](verification/2026-11-12-buildchain-dependency-fix.md)：C批批准、120条公告差分与完整验证；剩余5条由D／E继续处置。
+
+- [模式解析依赖修复（2026-11-12）](verification/2026-11-12-pattern-dependency-fix.md)：D批定向修复、取消与兼容回归；[E批具体修复方案](verification/2026-11-12-schema-merge-fix-plan.md)及实施结果见后续报告。
+
+- [Zod／deepmerge补丁修复（2026-11-12）](verification/2026-11-12-schema-merge-fix.md)：E批安装、安全与完整链路证据；原始告警和补丁处置分开记录，[维护说明](../patches/README.md)。
+
+- [发行物与许可验证（2026-11-12）](verification/2026-11-12-release-artifact-review.md)：实际镜像／许可／真实链路与OS阻断；[基础系统差异方案](verification/2026-11-12-runtime-base-remediation-plan.md)及A-009实施结果见后续报告。
+
+- [运行基础系统实施、真实验证与glibc剩余阻断](verification/2026-11-12-runtime-base-fix.md)（A-009，2026-11-12）。
+
+- [glibc状态复核与暂缓处置](verification/2026-11-13-glibc-status-review.md)：保留评级来源、未修复事实及发布阻断。
+- [DP-003测试分组验证](verification/2026-11-13-dp003-test-groups.md)：三个独立分组、默认全套及入口保护的本地验证。
+- [DP-004认证与会话验收方案](plans/2026-11-13-dp004-auth-acceptance.md)：待用户确认，尚未实施。

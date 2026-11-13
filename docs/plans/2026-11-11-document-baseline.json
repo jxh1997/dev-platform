@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-11-11",
+  "sourceCommit": "1a8a0ae250932df6d71044309c87f5086c133057",
+  "scope": "编制前的仓库文档快照；不含本次新计划及后续导航改动；历史证据未在本次重跑",
+  "documents": [
+    {
+      "path": "docs/README.md",
+      "sha256": "5d1ee029fafe04d0ccb489885e4ea75e8554c017cc18874bf203e9a75fa7d806",
+      "bytes": 4472
+    },
+    {
+      "path": "docs/architecture/ADR-001-framework-baseline.md",
+      "sha256": "dabe0ba6e4a3a514b7a7fa4a3a76ae576983fbb594610e49af34b63418a11a17",
+      "bytes": 3331
+    },
+    {
+      "path": "docs/architecture/ADR-002-bigint-identity.md",
+      "sha256": "d8012f90ee9b90af2ef39af21d5909ab5115152170a71d2b6a3c575c01c53eec",
+      "bytes": 1433
+    },
+    {
+      "path": "docs/architecture/ADR-003-admin-shell.md",
+      "sha256": "0365cf56f1277eb46c370903f6ca7d45e64e6e9231b2e7db3fe110f4c2c60347",
+      "bytes": 3192
+    },
+    {
+      "path": "docs/architecture/dependency-baseline.md",
+      "sha256": "299919c6b88ece7571019edbc5751665b071647632297ef65f674dd7b042f825",
+      "bytes": 4629
+    },
+    {
+      "path": "docs/architecture/ui-skill-baseline.md",
+      "sha256": "4a307e7ba9df99fab24980ffb7447a4541dc184c7bdf01b83296524dec31a642",
+      "bytes": 4921
+    },
+    {
+      "path": "docs/development/local-environment.md",
+      "sha256": "7f174ca559168654f814309f2dabb1135a0f8dfe1bd072b42a174bee6e7156cd",
+      "bytes": 3857
+    },
+    {
+      "path": "docs/development/module-guide.md",
+      "sha256": "8fa2c0f0f2a344c118ddd66fefd3c02d478e8e8dd014bd48256c82321234bc45",
+      "bytes": 11984
+    },
+    {
+      "path": "docs/modules/demo/records/README.md",
+      "sha256": "c5016d1dcfee839e3b6ed295bbf6c420ddf41805eec4ee3ba06ca7ed46658226",
+      "bytes": 2154
+    },
+    {
+      "path": "docs/modules/system/auth/README.md",
+      "sha256": "d6bf76271f8a7fdf3911233e46b886896068f2864b32f65693764d1e17883be7",
+      "bytes": 10727
+    },
+    {
+      "path": "docs/plans/2026-11-10-admin-ui-password.md",
+      "sha256": "dc95cbee3693b1918fb45d40f6e1a5953b7f246bb47a825bab1fd458987ffa45",
+      "bytes": 1008
+    },
+    {
+      "path": "docs/plans/2026-11-10-framework.md",
+      "sha256": "f1545b47b70fb9e06d8a3b48224e6a4df69138d470c8d48a3d279c953f39cd4b",
+      "bytes": 2588
+    },
+    {
+      "path": "docs/plans/2026-11-11-admin-shell.md",
+      "sha256": "0cfcf844fadebdfc738d5e3c77b37c835c21658394ce3d7bef855112a626f7b6",
+      "bytes": 2538
+    },
+    {
+      "path": "docs/plans/2026-11-11-auth-authorization.md",
+      "sha256": "5f2b4bec67adc1ef52c1421c4108b8af705fb4068b4de1ac2bc359e2ecbce6ea",
+      "bytes": 3016
+    },
+    {
+      "path": "docs/plans/2026-11-11-login-slider-design.md",
+      "sha256": "49f665417610a9dbd8ceced9582853e7548c719620c8633dd1b5f13c6265881f",
+      "bytes": 1925
+    },
+    {
+      "path": "docs/product/dev-platform.md",
+      "sha256": "f3cebab4608d3162e410c1b3909101fd200adf93585b2dd15522ee6978aa78dc",
+      "bytes": 89102
+    },
+    {
+      "path": "docs/standards/api-data.md",
+      "sha256": "1e0d6da3db01c52c7f5b8f604cb60b2acdc9809586099216cbc34db4279f1e1f",
+      "bytes": 10484
+    },
+    {
+      "path": "docs/standards/backend.md",
+      "sha256": "ae3d1a4e2d4860cdebf01a80a58848d97a082c66747910eee12268bb0239a5c2",
+      "bytes": 7068
+    },
+    {
+      "path": "docs/standards/engineering.md",
+      "sha256": "8a7debf642e8b6fb392f8cab2f3c044157e6cc29cb424b916f6bff53ca8095f5",
+      "bytes": 11044
+    },
+    {
+      "path": "docs/standards/frontend.md",
+      "sha256": "94a729b878eda881460a1fc387af095c4f5149a18fce3bfbdb7b600dd28a9bbf",
+      "bytes": 4903
+    },
+    {
+      "path": "docs/standards/quality-delivery.md",
+      "sha256": "f05262a57fbaa8f0e04a115f1bc5beb5c9fda9a52c9305bd9b82a8819251e16b",
+      "bytes": 7791
+    },
+    {
+      "path": "docs/standards/rule-index.md",
+      "sha256": "c7f323a7f6dba49b785b5bd5856b4872be2ba146fee223d5a8e04634e2847b40",
+      "bytes": 5316
+    },
+    {
+      "path": "docs/standards/security-jobs.md",
+      "sha256": "e953317a9ec1521c72d1481a2e15f9cbe3392237dfa978ec8245db02b2ca1910",
+      "bytes": 5956
+    },
+    {
+      "path": "docs/standards/ui-ux.md",
+      "sha256": "b6896b9c157248413a7e2ff3229f8014b849a04e3007dc43da000290be2a5307",
+      "bytes": 9119
+    },
+    {
+      "path": "docs/templates/adr.md",
+      "sha256": "540c336d4567ae33222bb4c5fcc4bfedc2b55d38a1c1b0fc17b23ae9c94f2b3c",
+      "bytes": 671
+    },
+    {
+      "path": "docs/templates/ai-task.md",
+      "sha256": "a604984f51e7e5ce5b419b2f5092d631f94348ddcaea7c67db742fa5b86f6523",
+      "bytes": 3070
+    },
+    {
+      "path": "docs/templates/module-spec.md",
+      "sha256": "249c5598b2ad2dbd11d3b117cc61d89ccf3f829a2654005f4b348768da6b8de1",
+      "bytes": 4213
+    },
+    {
+      "path": "docs/templates/verification-report.md",
+      "sha256": "98d7648ddebb0a758bae83ff91ddf26ae02b15de045a8a1a2de3d9890400b9ec",
+      "bytes": 1228
+    },
+    {
+      "path": "docs/verification/2026-11-10-framework.md",
+      "sha256": "452a03aa65e25f40c57c4ce5b1818eb1053bbc8368fdb7c7521a5d0522f55eab",
+      "bytes": 7336
+    },
+    {
+      "path": "docs/verification/2026-11-11-admin-shell.md",
+      "sha256": "25688c6c536fc8e061dbac5658d5d1693acbb6305fdc8e2db24a803a344d1384",
+      "bytes": 4958
+    },
+    {
+      "path": "docs/verification/2026-11-11-auth-authorization.md",
+      "sha256": "3cd1a7353580d68056bdef69ef229024b64b9132281c17b28d05ea80f5ed16dc",
+      "bytes": 7615
+    },
+    {
+      "path": "docs/verification/2026-11-11-local-recovery-and-restart.md",
+      "sha256": "081a7e5bfc4d755dd62c9c9ddb6487cda1aba50a06f54800106c3d62cf14dff4",
+      "bytes": 5239
+    },
+    {
+      "path": "docs/verification/2026-11-11-login-slider.md",
+      "sha256": "97f467fc0b64eeb24b48abbaaf918a482586d132e157a916b3677dd99215a984",
+      "bytes": 4180
+    },
+    {
+      "path": "docs/verification/dependency-audit.md",
+      "sha256": "9e3378f55f7a8a167629b98f57cb1444d75cae08eaa82870e9bbe63eb8140ab2",
+      "bytes": 2690
+    },
+    {
+      "path": "README.md",
+      "sha256": "ef1ecf1192e9ea8d557fedaf9eae43979064bbde771bc60473e7908211d2cb45",
+      "bytes": 12657
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "e47f4fba986675b296246f53feda005863f257ddd9756473680a906ef685729f",
+      "bytes": 4367
+    },
+    {
+      "path": "AI.md",
+      "sha256": "bfba2790abcde7248cb08347b5c8a36937c44b76f592f4d1df66a895ab5b561a",
+      "bytes": 9573
+    },
+    {
+      "path": "deployment/README.md",
+      "sha256": "7c8f8cfc3da6887b95e83d22bcecaa7d9017207a6a9338bc23e3ff39e6e052ba",
+      "bytes": 4343
+    },
+    {
+      "path": ".agents/skills/dev-platform-workflow/SKILL.md",
+      "sha256": "49b0e68f9a2b5c811f6561777c8ed241e62e3b04bb4f7d2ba9fb48b533289dbe",
+      "bytes": 1695
+    },
+    {
+      "path": "docs/api/openapi.json",
+      "sha256": "17f92567e474dde2764d7c33ad70216093c56f18f964b6fa821d1a1d60ff378d",
+      "bytes": 79028
+    }
+  ]
+}

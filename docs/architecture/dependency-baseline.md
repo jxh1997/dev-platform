@@ -56,3 +56,39 @@
 ## 容器证据
 
 Linux arm64 镜像构建与健康启动已通过，Node／MySQL／Nginx 及最终应用镜像 ID 见验证报告。构建使用经冻结安装验证的受控 pnpm 内容缓存；无缓存网络下载路径尚未完成验证。MySQL 容器重启后迁移记录保留、API 恢复健康。
+
+## DP-001 文档口径确认（2026-11-12）
+
+保留固定Vben来源及既有bcryptjs cost12、新密码6–12字符，登录兼容历史密码；不修改凭据。测试基线为Vitest／tsx真实HTTP与MySQL／Playwright，不新增Jest或Supertest来匹配旧文案。实际表名和接口以迁移／DTO／Controller及生成OpenAPI为准，本次不改依赖或数据库。
+
+本文件原有环境、锁摘要与“尚未接入”列表为2026-11-10记录；当前环境看local-environment，当前命令看实际package.json，定向验证工具见DP-003。历史记录不作为当前完整覆盖证明。依赖安全在DP-002重新审计；许可／可达性和CI缺口未因本次文档对齐被宣布通过。
+
+2026-11-12：DP-002.1现状审计完成，依赖版本／锁文件未变；当前风险见 [审查记录](../verification/2026-11-12-dependency-review.md)。候选修复未获批准，不将审计完成记作依赖安全通过。
+
+## 2026-11-12 首批定向修复结果
+
+A-003批准的DP-002.2-A已完成：仅router2.2.0的path-to-regexp固定至8.4.2，Vben来源保持不变。目标两条公告已移除；审计仍有其他风险，前文历史快照保持原口径。当前锁文件SHA-256：`d7f60fe1453782556a805ff8feba651ea8fc75805b2afd942c167d9a7a3fa1e9`。变更、回归、30组集成及1项授权E2E证据见[修复报告](../verification/2026-11-12-router-dependency-fix.md)。未发布，DP-002尚未闭项。
+
+## 2026-11-12 B批请求链修复结果
+
+A-004批准B批四依赖修复已验证；28条目标公告消除，剩余125条，metadata high62／moderate47／low21／critical0。保持Vben来源及A批修复；当前锁SHA-256：`bab7b36092e812c1e8a6717f99b24d790975a9547617c50178da1489323f0e3e`。实际变更、测试与差分见[报告](../verification/2026-11-12-request-dependency-fix.md)，不替代前文历史快照。DP-002仍未闭项，未发布。
+
+## 2026-11-12 C批依赖与构建链修复结果
+
+A-005批准C批已完成验证，26模块120条目标公告消除；剩余5条公告，metadata high3／moderate6／low1／critical0。Vue／国际化／Tiptap家族同步，Vben来源不变；4处模型声明已兼容适配。当前锁SHA-256：`1d507d3505f8579f1a8a60d2b39327d258210685229bba85279489bb5ed4ae77`。实际变更、76项定向测试、5项安全回归、30组集成及完整7项E2E见[报告](../verification/2026-11-12-buildchain-dependency-fix.md)。peer警告及发行物验证边界保留，DP-002未闭项、未发布，前文保留历史口径。
+
+## 2026-11-12 D批模式解析修复结果
+
+A-006批准D批已验证；按父包约束升级glob14.0.5／minimatch11.0.8，3条目标公告消除，无新增；剩2条Zod／deepmerge公告，metadata high2／moderate0／low1／critical0。锁SHA-256：`4e55c5c7f68ee36271600d7084f54ee7ed037afffce2d0a23a7d5637a765c2a7`。6项限时回归、两端构建及30组集成见[报告](../verification/2026-11-12-pattern-dependency-fix.md)；Vben／Zod／deepmerge保持既有版本，E批和发行物仍待逐项确认，DP-002未闭项、未发布。
+
+## 2026-11-12 E批补丁修复结果
+
+A-007批准：Zod4分支4.6.7、Zod3及Zod4-v3兼容层／deepmerge共3份补丁已安装验证，原许可保留。原始audit仍有2条版本告警、退出1（metadata high1／moderate0／low1／critical0）；两条分别有补丁处置证据，不能将原始计数写成0。锁SHA-256：ce5af43a90ddc9827bc75ba69e05010c04945a5f2dc123a4793f4927028c23bd。36入口／6组安全、17表单、30集成及7项E2E等结果见[报告](../verification/2026-11-12-schema-merge-fix.md)；Vben与表单peer不变，发行物／镜像／完整许可分发待002.3，DP-002尚未闭项。
+
+## 2026-11-12 发行物实测与OS门槛
+
+A-008验证Server199依赖／Web实际bundle79许可、两端镜像及7组真实运行链路通过。原始OS扫描：Server219条包-CVE记录（critical1／high34），Web185条（critical3／high55）；不是独立漏洞数。Server严重项有Debian不受影响证据单列，其他OS门槛未通过，不以npm补丁结果替代。见[报告](../verification/2026-11-12-release-artifact-review.md)及逐条证据。基础系统差异未批准实施，DP-002未闭项／未发布。
+
+## 2026-11-12 基础系统差异验证
+
+A-009批准的新Server／Web镜像均无critical／high匹配，真实7组链路及系统专项通过；Server保留24 medium／12 low／2 unknown，Web原始匹配全部0。2条glibc unknown未获修复／不受影响证据，DP-002.3-b及父任务继续阻断。npm原始2条版本告警及A-007补丁处置口径不变。见[最新报告](../verification/2026-11-12-runtime-base-fix.md)，未发布。

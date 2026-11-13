@@ -130,7 +130,6 @@
   ],
   "singleGroupUnionMatchesDefaultAll": true,
   "baselineCommit": "1a8a0ae250932df6d71044309c87f5086c133057",
-  "changesCommitted": false,
   "inputs": {
     "tests/integration.ts": "8fa7d3ccac619259d89e8a152dc7b21b4c709b09575deda22e57887f6cd4f5af",
     "tests/integration-cli.test.ts": "82536ad4a4ccf3e698853dc9e31bae7e80d0be69253cd5e38e3664facaea72e6",
@@ -141,5 +140,11 @@
     "tests/integration/identity.ts": "472010427a1d1e4b2ebd66ca649bfc215bed8247d1cc77958bcf5af2841b38c6",
     "package.json": "848db909c260a7da7762228a50bd7c3fcb3e6a674fd0b5d1261197a98c6372d5",
     ".github/workflows/ci.yml": "0d10d45f74fc25cb64c68d66c295943ad70cf18b8a57ea3b86c442ba16cdc6c3"
+  },
+  "changesCommittedAtValidation": false,
+  "archive": {
+    "implementationCommit": "85f0bc1602c293e5f709aa7bd59801103aaf5c19",
+    "validatedInputHashesRecheckedBeforeCommit": true,
+    "productionPublished": false
   }
 }
