@@ -22,6 +22,7 @@
     "db:seed": "tsx packages/database/src/cli.ts seed",
     "admin:init": "tsx packages/database/src/cli.ts admin",
     "test:integration": "pnpm build:server && tsx tests/integration.ts",
+    "test:integration:run": "tsx tests/integration.ts",
     "test:e2e": "playwright test",
     "postinstall": "pnpm -r --if-present run stub",
     "env:init": "node scripts/init-env.mjs",

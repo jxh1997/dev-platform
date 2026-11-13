@@ -1,0 +1,194 @@
+{
+  "baseline": "tests/integration.ts before DP-003; token hashes omit trivia",
+  "cases": [
+    {
+      "name": "登录滑块缺失、伪造、跨浏览器、错误密码消耗和并发重放拒绝",
+      "line": 170,
+      "tokenSha256": "e2e808b3fe56bbcf66d962b30b669f4118b11554e9cab25aefa73afdb58d5ace",
+      "group": "identity"
+    },
+    {
+      "name": "健康检查、未登录拒绝和统一响应",
+      "line": 245,
+      "tokenSha256": "e65ba651f90a5c0d43972a15efdfae175420064456fb9ce845d4fdcfb6ae6f68",
+      "group": "transport"
+    },
+    {
+      "name": "JSON 解析与请求体限制返回明确错误",
+      "line": 252,
+      "tokenSha256": "53bf262452048c382a4bf2d5dd7893cf70e1cd696961ae46b48e77e2530082ec",
+      "group": "transport"
+    },
+    {
+      "name": "GET/POST 白名单及方法覆盖拒绝",
+      "line": 271,
+      "tokenSha256": "4b13fdda3793b549779f8e0e2f5c9ab99c01ab5be0029558ecab64b3a0b83d47",
+      "group": "transport"
+    },
+    {
+      "name": "真实身份、菜单与当前权限",
+      "line": 293,
+      "tokenSha256": "f97cdc1c22bbdbf6cbc70d4357bce417d23d83899e67bb3f93b3645cc60fac46",
+      "group": "identity"
+    },
+    {
+      "name": "强制改密和缺少功能权限拒绝",
+      "line": 307,
+      "tokenSha256": "b32e94e6876baf57ee9df9a764528ac06fe170d5f450389ebf9ad76d36acd097",
+      "group": "identity"
+    },
+    {
+      "name": "输入白名单、分页、null 与未知字段校验",
+      "line": 323,
+      "tokenSha256": "39027dd55d7e241744ed057592efc6835fcadf795ce73b6f19d285218323bbea",
+      "group": "records"
+    },
+    {
+      "name": "并发幂等新增与成功审计同事务",
+      "line": 351,
+      "tokenSha256": "e24f4b7eb6e3bd8c24f3f19b651f2998fe631920d1971034c5f6e329bcb6d1dc",
+      "group": "records"
+    },
+    {
+      "name": "本人范围与全量查看不扩大修改权限",
+      "line": 379,
+      "tokenSha256": "20f6baafbb5e7b74d48f0f3c8bc339263ed7cd93d41b640548c01b4a3229a10b",
+      "group": "records"
+    },
+    {
+      "name": "并发版本冲突与未传字段保留",
+      "line": 411,
+      "tokenSha256": "dbad750ecb82a83215c846c0417414799ceff7889ccdc4f6688517505f0e256e",
+      "group": "records"
+    },
+    {
+      "name": "审计失败时业务更新回滚",
+      "line": 454,
+      "tokenSha256": "649fb008c590d425fe7a10b6356fcb1a37449329c070ce3127a9fb7ad78b4418",
+      "group": "records"
+    },
+    {
+      "name": "BIGINT、DECIMAL 和 UTC 时刻往返无损",
+      "line": 486,
+      "tokenSha256": "d2e30819da9b83be6f044c18f7fb179ba8a19cf4882d04952d74817d909edc77",
+      "group": "records"
+    },
+    {
+      "name": "软删除、版本检查和唯一编码保留",
+      "line": 530,
+      "tokenSha256": "663a04a9e5fcfded491d0090efb30a49691fa40640af393fab75e16577c3ebc7",
+      "group": "records"
+    },
+    {
+      "name": "过期 Access 的明确业务码",
+      "line": 564,
+      "tokenSha256": "9184a1c1c49ba2158bd61e251905180111ae04b3635f5f887006e1d6931028cb",
+      "group": "identity"
+    },
+    {
+      "name": "刷新来源校验、轮换与旧令牌复用撤销",
+      "line": 583,
+      "tokenSha256": "8aac7f8e74484bbe3cbf0109e1e20b1e14fe630dd6732aab5115098348dd4bd4",
+      "group": "identity"
+    },
+    {
+      "name": "密码长度边界与历史密码兼容",
+      "line": 609,
+      "tokenSha256": "7d6cf9863b1a1d568afceccd67cb22ebfceb7d206203322f8c819ae9e75c309e",
+      "group": "identity"
+    },
+    {
+      "name": "改密撤销旧会话、退出撤销",
+      "line": 632,
+      "tokenSha256": "2580ffcb10694ba2fcd68f4276d6ba639f4eafcb71b1f0259678633bad04f3c6",
+      "group": "identity"
+    },
+    {
+      "name": "用户新增并发幂等及审计白名单",
+      "line": 704,
+      "tokenSha256": "70233971d34f637983bdebb28fecb3cb31d52921d1832fed3fe615b48c01b5d8",
+      "group": "identity"
+    },
+    {
+      "name": "全部系统路由：未登录 401、普通业务账号直连 403",
+      "line": 733,
+      "tokenSha256": "f76ec2b13c64d27fd4524d9cfe0115de829142987e5983a6fb8b903407b825fc",
+      "group": "identity"
+    },
+    {
+      "name": "用户白名单、标准化唯一、普通账号禁止授权及管理越权",
+      "line": 758,
+      "tokenSha256": "0d98fa2cb00db2307e8850e76952288bc05b758a727c8b6a3457b63aab861489",
+      "group": "identity"
+    },
+    {
+      "name": "多角色按操作合并：全量查看不能扩大本人修改，绕过页面仍受限",
+      "line": 893,
+      "tokenSha256": "1d5d3aaa37d13cdb0f95de61d11754bb79b709e2a3a0cb62da674c6b0d3803b0",
+      "group": "identity"
+    },
+    {
+      "name": "停用角色、替换用户角色后原 Access 即时按新授权拒绝",
+      "line": 939,
+      "tokenSha256": "9339366945f7b05b6e2d3fe25ba7845bfea840a05753a0687a64b1f0bc3a592e",
+      "group": "identity"
+    },
+    {
+      "name": "菜单与接口权限独立：仅导航不授予 API，移除导航不撤销 API",
+      "line": 993,
+      "tokenSha256": "3b15ee30200ed04b922855088408d550eb955068881912b96f36dc2e15abe7e7",
+      "group": "identity"
+    },
+    {
+      "name": "普通管理员不能管理管理员或通过自我角色变更提权",
+      "line": 1035,
+      "tokenSha256": "eb0674f98d8436f5f96548115887afdab9c5e9d5a96cc28e4c1edb53b2c27bdc",
+      "group": "identity"
+    },
+    {
+      "name": "菜单白名单、危险外链、循环、深度与引用删除校验",
+      "line": 1071,
+      "tokenSha256": "dc4bc489d7c5cc456afbfe8cbe30efa16cb5a53fea4d6969a55d1dfbfc8e9476",
+      "group": "identity"
+    },
+    {
+      "name": "用户并发版本、会话所有者与撤销即时生效",
+      "line": 1173,
+      "tokenSha256": "409fd4e81b0ab1fc334558db2dba0339a376352d56f93120f0b8f72ef6f315b8",
+      "group": "identity"
+    },
+    {
+      "name": "禁用与重置撤销 Access 和 Refresh，重置用户强制改密",
+      "line": 1212,
+      "tokenSha256": "23db5950edb8c0f24c94cfffae6b55a41a699b6d5e985da26abd04733a5d46ad",
+      "group": "identity"
+    },
+    {
+      "name": "关联角色不可删除，授权变更与审计同事务",
+      "line": 1285,
+      "tokenSha256": "5779577ac9ab91b1020b5c8d04a39b0f9306098608b57ccbdfac8e0d5b35da80",
+      "group": "identity"
+    },
+    {
+      "name": "并发禁用最后两名超级管理员只能成功一次",
+      "line": 1332,
+      "tokenSha256": "2d95841f5a9fb0bbcead1d5694cdba65010f999c8a8783abe4ebd11b368d0340",
+      "group": "identity"
+    },
+    {
+      "name": "滑块公开接口独立来源限流与重试提示",
+      "line": 1354,
+      "tokenSha256": "8864fd999eb196a1cf427cd457e75ab5f55cba390be71eaffbe6ddafff09bff2",
+      "group": "identity"
+    }
+  ],
+  "verification": {
+    "all30NamesAndTokenHashesMatchAfterRelocationNormalization": true,
+    "normalization": "Only require/import paths in system route coverage check adjusted for tests/helpers and tests/integration relocation; assertions unchanged.",
+    "counts": {
+      "transport": 3,
+      "records": 7,
+      "identity": 20
+    }
+  }
+}

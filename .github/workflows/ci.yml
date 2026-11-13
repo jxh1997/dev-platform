@@ -48,7 +48,8 @@ jobs:
       - run: pnpm check:boundaries
       - run: pnpm api:check
       - run: pnpm build
-      - run: pnpm test:integration
+      - run: pnpm exec tsx --test tests/integration-cli.test.ts
+      - run: pnpm test:integration:run
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
       - uses: actions/upload-artifact@v4

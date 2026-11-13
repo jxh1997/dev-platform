@@ -4,6 +4,8 @@ DevPlatform（BaJie Dev｜八戒开发）是面向软件产品开发与客户定
 
 仓库：[jxh1997/dev-platform](https://github.com/jxh1997/dev-platform)。产品与验收基线：[DevPlatform 产品需求与技术实施方案 V1.0](docs/product/dev-platform.md)。
 
+开发推进见 [TODO](TODO.md)、[总开发计划](docs/plans/2026-11-11-master-development-plan.md) 和 [验证方案](docs/verification/2026-11-11-master-validation.md)。当前路线图待审核，历史局部通过不代表全部P0或正式版验收通过。
+
 ## 产品定位
 
 平台面向需要独立部署的小型业务系统，为行业软件、客户定制开发、部署实施和后续维护提供可复用基础。首个软件版本聚焦 **PC 管理后台＋通用后端**，以设备台账验证真实业务链路；App、小程序与 PDA 属于未来扩展方向。
@@ -130,12 +132,23 @@ pnpm build
 pnpm env:init --test
 docker compose --env-file .env.test -f deployment/compose.test.yaml up -d --wait
 pnpm test:integration
+# 定向验证仍先构建；可重复 --group，组内串行、每组独立夹具
+pnpm test:integration --group identity
+pnpm test:integration --group transport --group records
+# 仅在相关 Server 源码已构建且没有再修改时复用产物（不校验产物新鲜度）
+pnpm test:integration:run --group records
+# 测试入口自身的参数及环境保护回归，无需数据库
+pnpm exec tsx --test tests/integration-cli.test.ts
 pnpm exec playwright install chromium
 pnpm test:e2e
+# 按现有规格文件定向；默认仍执行全部浏览器用例
+pnpm test:e2e tests/e2e/authorization.spec.ts
 # E2E 默认使用 5778；其他测试端口通过 E2E_WEB_PORT 显式指定
 ```
 
 测试校验 APP_ENV、INSTANCE_ID、库名、账号和本机连接目标，仅清理本次随机创建的数据。集成测试包含权限、幂等、版本并发、审计失败回滚、精度及刷新复用；E2E 使用真实 API 验证登录、菜单、台账读写与重载恢复。测试 DB 首次迁移由集成测试执行，因此先运行集成测试再执行 E2E。
+
+集成测试分为 `transport`（传输与响应，3组）、`records`（台账范围与事务，7组）、`identity`（认证会话与系统授权，20组）。无参数默认全套；未知参数、未知分组与空值在连接数据库前失败。共用测试库的命令不能并行执行。CI 在本工作流构建后使用 `test:integration:run` 执行全套，仍保留完整 E2E。
 
 ## 部署
 
