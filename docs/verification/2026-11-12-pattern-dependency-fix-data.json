@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-12",
+  "task": "DP-002.2-D",
+  "approval": "A-006",
+  "beforeEvidence": "docs/verification/2026-11-12-buildchain-dependency-fix-data.json",
+  "beforeEvidenceSha256": "469db13876d2cf902e11d63bcc8ed026a564ddfc2720501f0ea7cbc68d3c1a1c",
+  "command": "pnpm audit --prod --json",
+  "exitCode": 1,
+  "rawAfterAuditSha256": "d12773a99ab0f43abdbb1b493207fe9496dd29928f0a40cafe1a9ec9cc61cc07",
+  "afterMetadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 1,
+      "moderate": 0,
+      "high": 2,
+      "critical": 0
+    },
+    "dependencies": 1697,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 1697
+  },
+  "removedAdvisories": [
+    {
+      "id": 1109842,
+      "module_name": "glob",
+      "severity": "high",
+      "title": "glob CLI: Command injection via -c/--cmd executes matches with shell:true",
+      "url": "https://github.com/advisories/GHSA-5j98-mcp5-4vw2",
+      "vulnerable_versions": ">=10.2.0 <10.5.0",
+      "patched_versions": ">=10.5.0",
+      "findings": [
+        {
+          "version": "10.4.5",
+          "paths": [
+            "internal__vite-config>archiver>archiver-utils>glob"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1244013,
+      "module_name": "glob",
+      "severity": "moderate",
+      "title": "Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal",
+      "url": "https://github.com/advisories/GHSA-3g3m-2fjr-6pw4",
+      "vulnerable_versions": ">=9.0.0 <=14.0.1",
+      "patched_versions": ">=14.0.2",
+      "findings": [
+        {
+          "version": "10.5.0",
+          "paths": [
+            ".>typeorm>glob"
+          ]
+        },
+        {
+          "version": "13.0.6",
+          "paths": [
+            "internal__node-utils>rimraf>glob"
+          ]
+        },
+        {
+          "version": "10.4.5",
+          "paths": [
+            "internal__vite-config>archiver>archiver-utils>glob"
+          ]
+        },
+        {
+          "version": "11.1.0",
+          "paths": [
+            "internal__vite-config>vite-plugin-pwa>workbox-build>glob"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1244623,
+      "module_name": "minimatch",
+      "severity": "moderate",
+      "title": "minimatch has potential denial of service via globparts amplification",
+      "url": "https://github.com/advisories/GHSA-g3hv-75wg-m249",
+      "vulnerable_versions": ">=7.0.0 <11.0.1",
+      "patched_versions": ">=11.0.1",
+      "findings": [
+        {
+          "version": "9.0.9",
+          "paths": [
+            ".>typeorm>glob>minimatch"
+          ]
+        },
+        {
+          "version": "10.2.5",
+          "paths": [
+            "internal__lint-configs__eslint-config>@typescript-eslint/eslint-plugin>@typescript-eslint/type-utils>@typescript-eslint/typescript-estree>minimatch"
+          ]
+        }
+      ]
+    }
+  ],
+  "remainingAdvisories": [
+    {
+      "id": 1243066,
+      "module_name": "zod",
+      "severity": "high",
+      "title": "Zod can exhaust memory while validating oversized constrained collections",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "vulnerable_versions": "<4.6.6",
+      "patched_versions": ">=4.6.6",
+      "findings": [
+        {
+          "version": "3.25.76",
+          "paths": [
+            ".>zod"
+          ]
+        },
+        {
+          "version": "4.4.3",
+          "paths": [
+            "scripts__vsh>knip>zod"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1243505,
+      "module_name": "deepmerge",
+      "severity": "low",
+      "title": "deepmerge mergeObject() allows prototype poisoning of returned objects",
+      "url": "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+      "vulnerable_versions": ">=4.2.0 <=4.3.1",
+      "patched_versions": "<0.0.0",
+      "findings": [
+        {
+          "version": "4.3.1",
+          "paths": [
+            "internal__vite-config>nitropack>@rollup/plugin-node-resolve>deepmerge"
+          ]
+        }
+      ]
+    }
+  ],
+  "unchangedAdvisoryRecords": 2,
+  "comparison": "findings及paths排序后比较全部快照字段",
+  "noAddedOrChangedAdvisoryRecords": true,
+  "afterInputs": {
+    "pnpm-workspace.yaml": "56f5e653165a484113e08f9bda01fbe84058d8347ab67c69d4b6b4cc1c88f956",
+    "pnpm-lock.yaml": "4e55c5c7f68ee36271600d7084f54ee7ed037afffce2d0a23a7d5637a765c2a7"
+  },
+  "beforeInputs": {
+    "pnpm-workspace.yaml": "8408386158ce2b6e8741a6bfd1194386a661e2e8343e7f61c94c0c233f52ac7e",
+    "pnpm-lock.yaml": "1d507d3505f8579f1a8a60d2b39327d258210685229bba85279489bb5ed4ae77"
+  },
+  "packageDiff": {
+    "added": [
+      "@isaacs/nonrecursive-glob-match@1.1.0",
+      "glob@14.0.5",
+      "minimatch@11.0.8",
+      "path-scurry@3.0.0"
+    ],
+    "removed": [
+      "@babel/compat-data@7.29.3",
+      "@babel/helper-compilation-targets@7.28.6",
+      "@isaacs/cliui@8.0.2",
+      "@isaacs/cliui@9.0.0",
+      "@pkgjs/parseargs@0.11.0",
+      "eastasianwidth@0.2.0",
+      "emoji-regex@9.2.2",
+      "foreground-child@3.3.1",
+      "glob@10.4.5",
+      "glob@10.5.0",
+      "glob@11.1.0",
+      "glob@13.0.6",
+      "jackspeak@3.4.3",
+      "jackspeak@4.2.3",
+      "lru-cache@10.4.3",
+      "minimatch@10.2.5",
+      "minimatch@9.0.9",
+      "path-scurry@1.11.1",
+      "path-scurry@2.0.2",
+      "sax@1.6.0",
+      "string-width@5.1.2",
+      "wrap-ansi@8.1.0"
+    ]
+  },
+  "targetOverrides": {
+    "@vercel/nft@1.5.0>glob": "14.0.5",
+    "archiver-utils@5.0.2>glob": "14.0.5",
+    "js-beautify@1.15.4>glob": "14.0.5",
+    "rimraf@6.1.3>glob": "14.0.5",
+    "typeorm@0.3.31>glob": "14.0.5",
+    "workbox-build@7.4.1>glob": "14.0.5",
+    "@eslint/config-array@0.23.5>minimatch": "11.0.8",
+    "@jspm/generator@2.15.0>minimatch": "11.0.8",
+    "@typescript-eslint/typescript-estree@8.59.4>minimatch": "11.0.8",
+    "circular-dependency-scanner@3.0.1>minimatch": "11.0.8",
+    "editorconfig@1.0.7>minimatch": "11.0.8",
+    "eslint@10.4.0>minimatch": "11.0.8",
+    "glob@14.0.5>minimatch": "11.0.8"
+  },
+  "installedTargetLicenses": [
+    {
+      "name": "glob",
+      "version": "14.0.5",
+      "license": "BlueOak-1.0.0",
+      "licenseFiles": [
+        "LICENSE.md"
+      ],
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "manifestSha256": "a0f97f0841264382d4c47a91e9e2e00833de5262fa56d714cb609b5046325c25"
+    },
+    {
+      "name": "minimatch",
+      "version": "11.0.8",
+      "license": "BlueOak-1.0.0",
+      "licenseFiles": [
+        "LICENSE.md"
+      ],
+      "engines": {
+        "node": "20 || >=22"
+      },
+      "manifestSha256": "e041e4eea42d4e631dcc9ec8d3e0a1ee7a29a2873f6be55ad92b5567ef0d4177"
+    },
+    {
+      "name": "path-scurry",
+      "version": "3.0.0",
+      "license": "BlueOak-1.0.0",
+      "licenseFiles": [
+        "LICENSE.md"
+      ],
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "manifestSha256": "74862badb890fd4ce50af0048f17ffd5ce23f28e998a68134917cb1dce20f3cc"
+    },
+    {
+      "name": "@isaacs/nonrecursive-glob-match",
+      "version": "1.1.0",
+      "license": "BlueOak-1.0.0",
+      "licenseFiles": [
+        "LICENSE.md"
+      ],
+      "engines": null,
+      "manifestSha256": "8c5a050303b8ac93b506cbd1e67cc8e1a77b331b8fb16309581f4e4c97b20f60"
+    }
+  ]
+}

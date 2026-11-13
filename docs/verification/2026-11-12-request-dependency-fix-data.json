@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-12",
+  "task": "DP-002.2-B",
+  "approval": "A-004",
+  "beforeEvidence": "docs/verification/2026-11-12-dependency-review-data.json",
+  "beforeEvidenceSha256": "7d80c1caa414077d4adad87586ca3b4d685892d5e9d47c0de38892c5e3c82141",
+  "priorRemovedIds": [
+    1115573,
+    1115582
+  ],
+  "command": "pnpm audit --prod --json",
+  "exitCode": 1,
+  "rawAfterAuditSha256": "5910611de607715dd2b919753d4425e01523c9aa11a976760b07897fecd0a216",
+  "afterMetadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 21,
+      "moderate": 47,
+      "high": 62,
+      "critical": 0
+    },
+    "dependencies": 1679,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 1679
+  },
+  "removedAdvisories": [
+    {
+      "id": 1120743,
+      "module_name": "form-data",
+      "severity": "high",
+      "title": "form-data: CRLF injection in form-data via unescaped multipart field names and filenames",
+      "url": "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx",
+      "vulnerable_versions": ">=4.0.0 <4.0.6",
+      "patched_versions": ">=4.0.6",
+      "findings": [
+        {
+          "version": "4.0.5",
+          "paths": [
+            "packages__effects__request>axios>form-data"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1138749,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Prototype pollution auth subfields can inject Basic auth",
+      "url": "https://github.com/advisories/GHSA-xj6q-8x83-jv6g",
+      "vulnerable_versions": ">=1.15.2 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1147949,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Prototype pollution gadgets can alter axios request construction",
+      "url": "https://github.com/advisories/GHSA-mmx7-hfxf-jppx",
+      "vulnerable_versions": ">=1.0.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1147950,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Deep formToJSON Key Recursion Can Cause Denial of Service",
+      "url": "https://github.com/advisories/GHSA-pmv8-rq9r-6j72",
+      "vulnerable_versions": ">=1.0.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1153175,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: HTTP/2 streamed uploads bypass `maxBodyLength`",
+      "url": "https://github.com/advisories/GHSA-mwf2-3pr3-8698",
+      "vulnerable_versions": ">=1.13.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1153178,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios Node HTTP adapter can use an inherited proxy after interceptor config cloning",
+      "url": "https://github.com/advisories/GHSA-gcfj-64vw-6mp9",
+      "vulnerable_versions": ">=1.15.2 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1153180,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Nested axios option objects can consume polluted prototype values",
+      "url": "https://github.com/advisories/GHSA-7q8q-rj6j-mhjq",
+      "vulnerable_versions": ">=1.0.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1153182,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Fetch adapter `ReadableStream` uploads bypass `maxBodyLength`",
+      "url": "https://github.com/advisories/GHSA-jqh4-m9w3-8hp9",
+      "vulnerable_versions": ">=1.7.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1153184,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: NO_PROXY bypass for 0.0.0.0 local addresses in axios",
+      "url": "https://github.com/advisories/GHSA-f4gw-2p7v-4548",
+      "vulnerable_versions": ">=1.15.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1153185,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Excessive recursion in formDataToJSON can cause denial of service",
+      "url": "https://github.com/advisories/GHSA-42h9-826w-cgv3",
+      "vulnerable_versions": ">=1.0.0 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1158506,
+      "module_name": "qs",
+      "severity": "moderate",
+      "title": "qs array-limit bypass via bracket-key comma parsing",
+      "url": "https://github.com/advisories/GHSA-x5fp-wj9c-mxmx",
+      "vulnerable_versions": ">=6.14.2 <=6.15.3",
+      "patched_versions": ">=6.16.0",
+      "findings": [
+        {
+          "version": "6.15.2",
+          "paths": [
+            "packages__@core__ui-kit__menu-ui>qs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1158507,
+      "module_name": "qs",
+      "severity": "moderate",
+      "title": "qs: Denial of Service via Attacker Controlled isBuffer",
+      "url": "https://github.com/advisories/GHSA-4mjr-xmp4-gh2g",
+      "vulnerable_versions": ">=2.2.5 <6.16.0",
+      "patched_versions": ">=6.16.0",
+      "findings": [
+        {
+          "version": "6.15.2",
+          "paths": [
+            "packages__@core__ui-kit__menu-ui>qs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1193664,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios form serializer maxDepth bypass via {} metatoken",
+      "url": "https://github.com/advisories/GHSA-hcpx-6fm6-wx23",
+      "vulnerable_versions": ">=1.15.1 <1.18.0",
+      "patched_versions": ">=1.18.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240600,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Prototype pollution gadget in fetch adapter can alter outbound requests",
+      "url": "https://github.com/advisories/GHSA-vh66-26gq-q6x8",
+      "vulnerable_versions": ">=1.7.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240601,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Prototype-Pollution Gadget in the Default Instance Allows Inherited Object.prototype.method to Override HTTP Method",
+      "url": "https://github.com/advisories/GHSA-9fr6-4gfg-395g",
+      "vulnerable_versions": ">=1.0.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240603,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios: ReDoS in fromDataURI data: URL parser freezes the Node event loop (DoS)",
+      "url": "https://github.com/advisories/GHSA-c29m-xwm3-cm6r",
+      "vulnerable_versions": ">=1.16.1 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240604,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios: ReDoS (O(N²)) in shouldBypassProxy host normalization, reachable via untrusted redirect Location",
+      "url": "https://github.com/advisories/GHSA-mghh-pgcx-3jjj",
+      "vulnerable_versions": ">=1.15.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240605,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios: Prototype Pollution Gadget in axios toFormData Options",
+      "url": "https://github.com/advisories/GHSA-x97p-jq2g-jp4f",
+      "vulnerable_versions": ">=1.15.1 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240607,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios: HTTP/2 adapter bypasses configured DNS lookup and proxy controls",
+      "url": "https://github.com/advisories/GHSA-3pq3-5fj3-cg6v",
+      "vulnerable_versions": ">=1.13.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240608,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios: Denial of Service via Unhandled 'error' Event in HTTP/2 ClientHttp2Session Initialization",
+      "url": "https://github.com/advisories/GHSA-542g-h47m-68v8",
+      "vulnerable_versions": ">=1.13.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240626,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Header Injection via Inherited headers After Minimal Interceptor",
+      "url": "https://github.com/advisories/GHSA-j8rh-479h-cp32",
+      "vulnerable_versions": ">=1.0.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240627,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: Fetch Adapter Header Injection via Inherited FormData getHeaders",
+      "url": "https://github.com/advisories/GHSA-4hqw-qxg8-jxx2",
+      "vulnerable_versions": ">=1.12.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240628,
+      "module_name": "axios",
+      "severity": "high",
+      "title": "Axios: Node HTTP adapter prototype-pollution gadget allows request socket hijack via inherited createConnection",
+      "url": "https://github.com/advisories/GHSA-m8m8-qj5v-23w3",
+      "vulnerable_versions": ">=1.15.2 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1240629,
+      "module_name": "axios",
+      "severity": "moderate",
+      "title": "Axios: CIDR-form NO_PROXY entries are ignored, causing proxy exclusion bypass for internal IP ranges",
+      "url": "https://github.com/advisories/GHSA-44g4-m2mj-wpvx",
+      "vulnerable_versions": ">=1.15.0 <1.20.0",
+      "patched_versions": ">=1.20.0",
+      "findings": [
+        {
+          "version": "1.16.1",
+          "paths": [
+            "packages__effects__request>axios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1242604,
+      "module_name": "follow-redirects",
+      "severity": "high",
+      "title": "follow-redirects array-form headers bypass cross-origin credential stripping",
+      "url": "https://github.com/advisories/GHSA-q3jh-wrc6-jgq8",
+      "vulnerable_versions": ">=1.16.0 <1.16.1",
+      "patched_versions": ">=1.16.1",
+      "findings": [
+        {
+          "version": "1.16.0",
+          "paths": [
+            "packages__effects__request>axios>follow-redirects"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1242605,
+      "module_name": "follow-redirects",
+      "severity": "high",
+      "title": "follow-redirects sensitiveHeaders regex escaping can expose credential headers",
+      "url": "https://github.com/advisories/GHSA-8r9p-f939-6h3c",
+      "vulnerable_versions": ">=1.16.0 <1.16.1",
+      "patched_versions": ">=1.16.1",
+      "findings": [
+        {
+          "version": "1.16.0",
+          "paths": [
+            "packages__effects__request>axios>follow-redirects"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1243687,
+      "module_name": "qs",
+      "severity": "moderate",
+      "title": "qs : qs.stringify with arrayFormat 'comma' throws an uncaught TypeError on array elements carrying a non-callable own toString (DoS)",
+      "url": "https://github.com/advisories/GHSA-6pq8-jhm2-2vcw",
+      "vulnerable_versions": ">=6.7.0 <=6.16.0",
+      "patched_versions": ">=6.16.1",
+      "findings": [
+        {
+          "version": "6.15.2",
+          "paths": [
+            "packages__@core__ui-kit__menu-ui>qs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1244003,
+      "module_name": "follow-redirects",
+      "severity": "high",
+      "title": "follow-redirects: Cross-realm sensitiveHeaders arrays are discarded and custom credentials can follow redirects",
+      "url": "https://github.com/advisories/GHSA-mrwp-f3q8-3g9p",
+      "vulnerable_versions": ">=1.16.0 <=1.16.1",
+      "patched_versions": ">=1.16.2",
+      "findings": [
+        {
+          "version": "1.16.0",
+          "paths": [
+            "packages__effects__request>axios>follow-redirects"
+          ]
+        }
+      ]
+    }
+  ],
+  "unchangedAdvisoryRecords": 125,
+  "comparison": "findings及paths排序后比较全部快照字段",
+  "noAddedOrChangedAdvisoryRecords": true,
+  "afterInputs": {
+    "pnpm-workspace.yaml": "ed49108ce84783582c18851fe9bad9c89b7779d50aae342de6e0ba8f2ed59823",
+    "pnpm-lock.yaml": "bab7b36092e812c1e8a6717f99b24d790975a9547617c50178da1489323f0e3e"
+  },
+  "beforeInputs": {
+    "pnpm-workspace.yaml": "0b273ae3d2ece9a37f2ae393278d55865aebed55d1815a46a2717536c933185d",
+    "pnpm-lock.yaml": "d7f60fe1453782556a805ff8feba651ea8fc75805b2afd942c167d9a7a3fa1e9"
+  },
+  "lockChangedPaths": [
+    "/catalogs/default/axios/specifier",
+    "/catalogs/default/axios/version",
+    "/catalogs/default/qs/specifier",
+    "/catalogs/default/qs/version",
+    "/importers/packages/@core/ui-kit/menu-ui/dependencies/qs/version",
+    "/importers/packages/effects/common-ui/dependencies/@vueuse/integrations/version",
+    "/importers/packages/effects/request/dependencies/axios/version",
+    "/importers/packages/effects/request/dependencies/qs/version",
+    "/importers/packages/effects/request/devDependencies/axios-mock-adapter/version",
+    "/packages/axios@1.16.1",
+    "/packages/follow-redirects@1.16.0",
+    "/packages/form-data@4.0.5",
+    "/packages/qs@6.15.2",
+    "/packages/side-channel@1.1.0",
+    "/packages/axios@1.21.1",
+    "/packages/follow-redirects@1.16.3",
+    "/packages/form-data@4.0.6",
+    "/packages/hasown@2.0.4",
+    "/snapshots/@vueuse/integrations@14.3.0(async-validator@4.2.5)(axios@1.16.1)(change-case@5.4.4)(focus-trap@8.2.1)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))",
+    "/snapshots/axios-mock-adapter@2.1.0(axios@1.16.1)",
+    "/snapshots/axios@1.16.1",
+    "/snapshots/es-abstract@1.24.2/dependencies/hasown",
+    "/snapshots/es-set-tostringtag@2.1.0/dependencies/hasown",
+    "/snapshots/follow-redirects@1.16.0",
+    "/snapshots/form-data@4.0.5",
+    "/snapshots/function.prototype.name@1.1.8/dependencies/hasown",
+    "/snapshots/internal-slot@1.1.0/dependencies/hasown",
+    "/snapshots/is-regex@1.2.1/dependencies/hasown",
+    "/snapshots/qs@6.15.2",
+    "/snapshots/side-channel@1.1.0",
+    "/snapshots/@vueuse/integrations@14.3.0(async-validator@4.2.5)(axios@1.21.1)(change-case@5.4.4)(focus-trap@8.2.1)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))",
+    "/snapshots/axios-mock-adapter@2.1.0(axios@1.21.1)",
+    "/snapshots/axios@1.21.1",
+    "/snapshots/follow-redirects@1.16.3",
+    "/snapshots/form-data@4.0.6",
+    "/snapshots/hasown@2.0.4"
+  ],
+  "licenses": {
+    "axios@1.21.1": "MIT",
+    "qs@6.17.1": "BSD-3-Clause",
+    "form-data@4.0.6": "MIT",
+    "follow-redirects@1.16.3": "MIT"
+  }
+}

@@ -1,0 +1,326 @@
+diff --git a/src/v3/types.ts b/src/v3/types.ts
+index b10e84f1beb1dacdae5e01c42a223974b9e20b73..5a0f66f1b0819bed6266547bff4c4f1f5f5e54e5 100644
+--- a/src/v3/types.ts
++++ b/src/v3/types.ts
+@@ -2263,6 +2263,8 @@ export class ZodArray<T extends ZodTypeAny, Cardinality extends ArrayCardinality
+           exact: true,
+           message: def.exactLength.message,
+         });
++        // Stop before allocating child parses when the declared upper bound fails.
++        if (tooBig) return INVALID;
+         status.dirty();
+       }
+     }
+@@ -2291,7 +2293,8 @@ export class ZodArray<T extends ZodTypeAny, Cardinality extends ArrayCardinality
+           exact: false,
+           message: def.maxLength.message,
+         });
+-        status.dirty();
++        // Stop before allocating child parses when the declared upper bound fails.
++        return INVALID;
+       }
+     }
+ 
+@@ -3723,7 +3726,8 @@ export class ZodSet<Value extends ZodTypeAny = ZodTypeAny> extends ZodType<
+           exact: false,
+           message: def.maxSize.message,
+         });
+-        status.dirty();
++        // Stop before allocating child parses when the declared upper bound fails.
++        return INVALID;
+       }
+     }
+ 
+diff --git a/src/v4/core/schemas.ts b/src/v4/core/schemas.ts
+index ce16838549a39ff2522a1b6eea2b8994265f1b0f..acc57d37fbd8b69e9a5ef32db80fd7ab45cebf6c 100644
+--- a/src/v4/core/schemas.ts
++++ b/src/v4/core/schemas.ts
+@@ -169,6 +169,8 @@ export interface _$ZodType<T extends $ZodTypeInternals = $ZodTypeInternals>
+   // _zod: T;
+ }
+ 
++// Only size-cap rejection skips post-parse checks against still-unparsed values.
++const sizeCapRejected = new WeakSet<ParsePayload>();
+ export const $ZodType: core.$constructor<$ZodType> = /*@__PURE__*/ core.$constructor("$ZodType", (inst, def) => {
+   inst ??= {} as any;
+ 
+@@ -203,7 +205,8 @@ export const $ZodType: core.$constructor<$ZodType> = /*@__PURE__*/ core.$constru
+       checks: checks.$ZodCheck<never>[],
+       ctx?: ParseContextInternal | undefined
+     ): util.MaybeAsync<ParsePayload> => {
+-      let isAborted = util.aborted(payload);
++      if (sizeCapRejected.has(payload)) return payload;
++            let isAborted = util.aborted(payload);
+ 
+       let asyncResult!: Promise<unknown> | undefined;
+       for (const ch of checks) {
+@@ -1514,6 +1517,29 @@ function handleArrayResult(result: ParsePayload<any>, final: ParsePayload<any[]>
+   final.value[index] = result.value;
+ }
+ 
++// Backport of the upstream collection cap: reject existing upper bounds before child parsing.
++function capCollectionSize(inst: $ZodType, size: (input: unknown) => number) {
++    const caps = (inst._zod.def.checks ?? []).filter((check) =>
++        ["max_length", "length_equals", "max_size", "size_equals"].includes(check._zod.def.check));
++    if (!caps.length) return;
++    const parse = inst._zod.parse;
++    inst._zod.parse = (payload, ctx) => {
++        const n = size(payload.value);
++        for (const check of caps) {
++            const def = check._zod.def;
++            const cap = "maximum" in def ? def.maximum : "length" in def ? def.length : "size" in def ? def.size : undefined;
++            if (typeof cap !== "number" || n <= cap || (def.when && !def.when(payload))) continue;
++            const start = payload.issues.length;
++            check._zod.check(payload);
++            if (payload.issues.length > start) {
++                payload.issues[start].continue = false;
++                sizeCapRejected.add(payload);
++                return payload;
++            }
++        }
++        return parse(payload, ctx);
++    };
++}
+ export const $ZodArray: core.$constructor<$ZodArray> = /*@__PURE__*/ core.$constructor("$ZodArray", (inst, def) => {
+   $ZodType.init(inst, def);
+ 
+@@ -1555,6 +1581,7 @@ export const $ZodArray: core.$constructor<$ZodArray> = /*@__PURE__*/ core.$const
+ 
+     return payload; //handleArrayResultsAsync(parseResults, final);
+   };
++    capCollectionSize(inst, (input) => Array.isArray(input) ? input.length : -1);
+ });
+ 
+ //////////////////////////////////////////
+@@ -2599,6 +2626,7 @@ export const $ZodMap: core.$constructor<$ZodMap> = /*@__PURE__*/ core.$construct
+     if (proms.length) return Promise.all(proms).then(() => payload);
+     return payload;
+   };
++    capCollectionSize(inst, (input) => input instanceof Map ? input.size : -1);
+ });
+ 
+ function handleMapResult(
+@@ -2691,6 +2719,7 @@ export const $ZodSet: core.$constructor<$ZodSet> = /*@__PURE__*/ core.$construct
+     if (proms.length) return Promise.all(proms).then(() => payload);
+     return payload;
+   };
++    capCollectionSize(inst, (input) => input instanceof Set ? input.size : -1);
+ });
+ 
+ function handleSetResult(result: ParsePayload, final: ParsePayload<Set<any>>) {
+diff --git a/v3/types.cjs b/v3/types.cjs
+index 11ed4dfc4745f9af1f1501874576b78b77d294ef..213463d5328e933fd00b1e10e397ed365b5bc3d2 100644
+--- a/v3/types.cjs
++++ b/v3/types.cjs
+@@ -1790,6 +1790,8 @@ class ZodArray extends ZodType {
+                     exact: true,
+                     message: def.exactLength.message,
+                 });
++                // Stop before allocating child parses when the declared upper bound fails.
++                if (tooBig) return parseUtil_js_1.INVALID;
+                 status.dirty();
+             }
+         }
+@@ -1816,7 +1818,8 @@ class ZodArray extends ZodType {
+                     exact: false,
+                     message: def.maxLength.message,
+                 });
+-                status.dirty();
++                // Stop before allocating child parses when the declared upper bound fails.
++                return parseUtil_js_1.INVALID;
+             }
+         }
+         if (ctx.common.async) {
+@@ -2843,7 +2846,8 @@ class ZodSet extends ZodType {
+                     exact: false,
+                     message: def.maxSize.message,
+                 });
+-                status.dirty();
++                // Stop before allocating child parses when the declared upper bound fails.
++                return parseUtil_js_1.INVALID;
+             }
+         }
+         const valueType = this._def.valueType;
+diff --git a/v3/types.js b/v3/types.js
+index 40b11c0f01b2af54e0ed48e198607bd8836d9a63..4f94e142636c98fd8ba3e12c7a1f1cc552b90ef5 100644
+--- a/v3/types.js
++++ b/v3/types.js
+@@ -1769,6 +1769,8 @@ export class ZodArray extends ZodType {
+                     exact: true,
+                     message: def.exactLength.message,
+                 });
++                // Stop before allocating child parses when the declared upper bound fails.
++                if (tooBig) return INVALID;
+                 status.dirty();
+             }
+         }
+@@ -1795,7 +1797,8 @@ export class ZodArray extends ZodType {
+                     exact: false,
+                     message: def.maxLength.message,
+                 });
+-                status.dirty();
++                // Stop before allocating child parses when the declared upper bound fails.
++                return INVALID;
+             }
+         }
+         if (ctx.common.async) {
+@@ -2814,7 +2817,8 @@ export class ZodSet extends ZodType {
+                     exact: false,
+                     message: def.maxSize.message,
+                 });
+-                status.dirty();
++                // Stop before allocating child parses when the declared upper bound fails.
++                return INVALID;
+             }
+         }
+         const valueType = this._def.valueType;
+diff --git a/v4/core/schemas.cjs b/v4/core/schemas.cjs
+index 7c77d2b5af031e086d535f4b2e1898cec17eda29..d499635455db0b1c1c1e08cf4c3a11bb6e70163b 100644
+--- a/v4/core/schemas.cjs
++++ b/v4/core/schemas.cjs
+@@ -35,6 +35,8 @@ const parse_js_1 = require("./parse.cjs");
+ const regexes = __importStar(require("./regexes.cjs"));
+ const util = __importStar(require("./util.cjs"));
+ const versions_js_1 = require("./versions.cjs");
++// Only size-cap rejection skips post-parse checks against still-unparsed values.
++const sizeCapRejected = new WeakSet();
+ exports.$ZodType = core.$constructor("$ZodType", (inst, def) => {
+     var _a;
+     inst ?? (inst = {});
+@@ -62,6 +64,7 @@ exports.$ZodType = core.$constructor("$ZodType", (inst, def) => {
+     }
+     else {
+         const runChecks = (payload, checks, ctx) => {
++            if (sizeCapRejected.has(payload)) return payload;
+             let isAborted = util.aborted(payload);
+             let asyncResult;
+             for (const ch of checks) {
+@@ -650,6 +653,29 @@ function handleArrayResult(result, final, index) {
+     }
+     final.value[index] = result.value;
+ }
++// Backport of the upstream collection cap: reject existing upper bounds before child parsing.
++function capCollectionSize(inst, size) {
++    const caps = (inst._zod.def.checks ?? []).filter((check) =>
++        ["max_length", "length_equals", "max_size", "size_equals"].includes(check._zod.def.check));
++    if (!caps.length) return;
++    const parse = inst._zod.parse;
++    inst._zod.parse = (payload, ctx) => {
++        const n = size(payload.value);
++        for (const check of caps) {
++            const def = check._zod.def;
++            const cap = "maximum" in def ? def.maximum : "length" in def ? def.length : "size" in def ? def.size : undefined;
++            if (typeof cap !== "number" || n <= cap || (def.when && !def.when(payload))) continue;
++            const start = payload.issues.length;
++            check._zod.check(payload);
++            if (payload.issues.length > start) {
++                payload.issues[start].continue = false;
++                sizeCapRejected.add(payload);
++                return payload;
++            }
++        }
++        return parse(payload, ctx);
++    };
++}
+ exports.$ZodArray = core.$constructor("$ZodArray", (inst, def) => {
+     exports.$ZodType.init(inst, def);
+     inst._zod.parse = (payload, ctx) => {
+@@ -683,6 +709,7 @@ exports.$ZodArray = core.$constructor("$ZodArray", (inst, def) => {
+         }
+         return payload; //handleArrayResultsAsync(parseResults, final);
+     };
++    capCollectionSize(inst, (input) => Array.isArray(input) ? input.length : -1);
+ });
+ function handleObjectResult(result, final, key) {
+     // if(isOptional)
+@@ -1304,6 +1331,7 @@ exports.$ZodMap = core.$constructor("$ZodMap", (inst, def) => {
+             return Promise.all(proms).then(() => payload);
+         return payload;
+     };
++    capCollectionSize(inst, (input) => input instanceof Map ? input.size : -1);
+ });
+ function handleMapResult(keyResult, valueResult, final, key, input, inst, ctx) {
+     if (keyResult.issues.length) {
+@@ -1364,6 +1392,7 @@ exports.$ZodSet = core.$constructor("$ZodSet", (inst, def) => {
+             return Promise.all(proms).then(() => payload);
+         return payload;
+     };
++    capCollectionSize(inst, (input) => input instanceof Set ? input.size : -1);
+ });
+ function handleSetResult(result, final) {
+     if (result.issues.length) {
+diff --git a/v4/core/schemas.js b/v4/core/schemas.js
+index 692ce1fc2d0e138b51b5af2bafe0e2b4a279c0bc..0219580a3dfece267835ceb90ee441d538b00255 100644
+--- a/v4/core/schemas.js
++++ b/v4/core/schemas.js
+@@ -5,6 +5,8 @@ import { safeParse, safeParseAsync } from "./parse.js";
+ import * as regexes from "./regexes.js";
+ import * as util from "./util.js";
+ import { version } from "./versions.js";
++// Only size-cap rejection skips post-parse checks against still-unparsed values.
++const sizeCapRejected = new WeakSet();
+ export const $ZodType = /*@__PURE__*/ core.$constructor("$ZodType", (inst, def) => {
+     var _a;
+     inst ?? (inst = {});
+@@ -32,6 +34,7 @@ export const $ZodType = /*@__PURE__*/ core.$constructor("$ZodType", (inst, def)
+     }
+     else {
+         const runChecks = (payload, checks, ctx) => {
++            if (sizeCapRejected.has(payload)) return payload;
+             let isAborted = util.aborted(payload);
+             let asyncResult;
+             for (const ch of checks) {
+@@ -619,6 +622,29 @@ function handleArrayResult(result, final, index) {
+     }
+     final.value[index] = result.value;
+ }
++// Backport of the upstream collection cap: reject existing upper bounds before child parsing.
++function capCollectionSize(inst, size) {
++    const caps = (inst._zod.def.checks ?? []).filter((check) =>
++        ["max_length", "length_equals", "max_size", "size_equals"].includes(check._zod.def.check));
++    if (!caps.length) return;
++    const parse = inst._zod.parse;
++    inst._zod.parse = (payload, ctx) => {
++        const n = size(payload.value);
++        for (const check of caps) {
++            const def = check._zod.def;
++            const cap = "maximum" in def ? def.maximum : "length" in def ? def.length : "size" in def ? def.size : undefined;
++            if (typeof cap !== "number" || n <= cap || (def.when && !def.when(payload))) continue;
++            const start = payload.issues.length;
++            check._zod.check(payload);
++            if (payload.issues.length > start) {
++                payload.issues[start].continue = false;
++                sizeCapRejected.add(payload);
++                return payload;
++            }
++        }
++        return parse(payload, ctx);
++    };
++}
+ export const $ZodArray = /*@__PURE__*/ core.$constructor("$ZodArray", (inst, def) => {
+     $ZodType.init(inst, def);
+     inst._zod.parse = (payload, ctx) => {
+@@ -652,6 +678,7 @@ export const $ZodArray = /*@__PURE__*/ core.$constructor("$ZodArray", (inst, def
+         }
+         return payload; //handleArrayResultsAsync(parseResults, final);
+     };
++    capCollectionSize(inst, (input) => Array.isArray(input) ? input.length : -1);
+ });
+ function handleObjectResult(result, final, key) {
+     // if(isOptional)
+@@ -1273,6 +1300,7 @@ export const $ZodMap = /*@__PURE__*/ core.$constructor("$ZodMap", (inst, def) =>
+             return Promise.all(proms).then(() => payload);
+         return payload;
+     };
++    capCollectionSize(inst, (input) => input instanceof Map ? input.size : -1);
+ });
+ function handleMapResult(keyResult, valueResult, final, key, input, inst, ctx) {
+     if (keyResult.issues.length) {
+@@ -1333,6 +1361,7 @@ export const $ZodSet = /*@__PURE__*/ core.$constructor("$ZodSet", (inst, def) =>
+             return Promise.all(proms).then(() => payload);
+         return payload;
+     };
++    capCollectionSize(inst, (input) => input instanceof Set ? input.size : -1);
+ });
+ function handleSetResult(result, final) {
+     if (result.issues.length) {

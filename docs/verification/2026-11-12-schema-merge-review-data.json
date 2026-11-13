@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-12",
+  "purpose": "DP-002.2-E proposed only; no installation or patch applied",
+  "zod4Candidate": "4.6.7",
+  "registrySource": "https://registry.npmjs.org/zod/4.6.7",
+  "dist": {
+    "shasum": "e806cf64a7f4e37635ce9f2f52c04c3766f75e5b",
+    "tarball": "https://registry.npmjs.org/zod/-/zod-4.6.7.tgz",
+    "fileCount": 840,
+    "integrity": "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==",
+    "signatures": [
+      {
+        "sig": "MEUCIQCwQ7Os025hoW1C24cDvgD4t5gynQpYlWHx1ok/Bke33AIgPP2J7w4z9B/fqA62pHpEBvjlB5ScCMm3c0adt03XQlY=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "attestations": {
+      "url": "https://registry.npmjs.org/-/npm/v1/attestations/zod@4.6.7",
+      "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1"
+      }
+    },
+    "unpackedSize": 6148944
+  },
+  "sourceSha256": {
+    "v3/types.cjs": "7a2f06d88e280bdd198c60e0d292ed7f1e3993e877be4415de07e6abc7746dd1",
+    "v4/core/schemas.cjs": "7e35563b275bcc457a6d8ae0f5e1354b3c499ddd38401439f16bed1b8f357e41",
+    "package.json": "c2d190d9ee4e0bdb60332aaa2130a6a98d65ddb903fe1d29248b15de57832c45"
+  },
+  "upstreamCapSizeSha256": "2001b3e102b5c9f497b24119ba1c58d550bcdeab6b3f983c856fb1825e7fe8de",
+  "v3ArrayFinding": "v3/types.cjs still iterates elements after maxLength/exactLength issue; package-version upgrade plus zod/v3 import is not accepted as a source-level fix",
+  "evidenceSource": "public npm tarball read in memory; not installed or executed"
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-12",
+  "task": "DP-002.2-A",
+  "approval": "A-003",
+  "beforeEvidence": "docs/verification/2026-11-12-dependency-review-data.json",
+  "beforeEvidenceSha256": "7d80c1caa414077d4adad87586ca3b4d685892d5e9d47c0de38892c5e3c82141",
+  "command": "pnpm audit --prod --json",
+  "exitCode": 1,
+  "rawAfterAuditSha256": "b169f9e37d918789e72cb8b790cb4d99e402f162ee1c86e81ec35a936da569b8",
+  "afterMetadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 21,
+      "moderate": 64,
+      "high": 73,
+      "critical": 0
+    },
+    "dependencies": 1680,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 1680
+  },
+  "removedAdvisories": [
+    {
+      "id": 1115573,
+      "module_name": "path-to-regexp",
+      "severity": "high",
+      "title": "path-to-regexp vulnerable to Denial of Service via sequential optional groups",
+      "url": "https://github.com/advisories/GHSA-j3q9-mxjg-w52f",
+      "vulnerable_versions": ">=8.0.0 <8.4.0",
+      "patched_versions": ">=8.4.0",
+      "findings": [
+        {
+          "version": "8.2.0",
+          "paths": [
+            ".>@nestjs/platform-express>express>router>path-to-regexp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1115582,
+      "module_name": "path-to-regexp",
+      "severity": "moderate",
+      "title": "path-to-regexp vulnerable to Regular Expression Denial of Service via multiple wildcards",
+      "url": "https://github.com/advisories/GHSA-27v5-c462-wpq7",
+      "vulnerable_versions": ">=8.0.0 <8.4.0",
+      "patched_versions": ">=8.4.0",
+      "findings": [
+        {
+          "version": "8.2.0",
+          "paths": [
+            ".>@nestjs/platform-express>express>router>path-to-regexp"
+          ]
+        }
+      ]
+    }
+  ],
+  "unchangedAdvisoryRecords": 153,
+  "comparison": "findings及paths排序后比较全部原快照字段",
+  "noAddedOrChangedAdvisoryRecords": true,
+  "afterInputs": {
+    "pnpm-workspace.yaml": "0b273ae3d2ece9a37f2ae393278d55865aebed55d1815a46a2717536c933185d",
+    "pnpm-lock.yaml": "d7f60fe1453782556a805ff8feba651ea8fc75805b2afd942c167d9a7a3fa1e9"
+  },
+  "beforeLockSha256": "5654818c0d0095b373bc4f4eb26c7c8524aadd88af3c53a4f1988ab1c2962490"
+}

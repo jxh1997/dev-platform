@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-12",
+  "task": "DP-002.2-E",
+  "approval": "A-007",
+  "beforeEvidence": "docs/verification/2026-11-12-pattern-dependency-fix-data.json",
+  "beforeEvidenceSha256": "3d1ac99a3363ee32057da84edcf7a6b1dcc000048a613e4274a265facf2fd2e4",
+  "command": "pnpm audit --prod --json",
+  "exitCode": 1,
+  "rawAfterAuditSha256": "cf51caa226b042ca4a66380335cde28922aeb7c2b8a748c0ffa86f9a73aebdc9",
+  "afterMetadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 1,
+      "moderate": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "dependencies": 1697,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 1697
+  },
+  "rawRemainingAdvisories": [
+    {
+      "id": 1243066,
+      "module_name": "zod",
+      "severity": "high",
+      "title": "Zod can exhaust memory while validating oversized constrained collections",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "vulnerable_versions": "<4.6.6",
+      "patched_versions": ">=4.6.6",
+      "findings": [
+        {
+          "version": "3.25.76",
+          "paths": [
+            ".>zod"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1243505,
+      "module_name": "deepmerge",
+      "severity": "low",
+      "title": "deepmerge mergeObject() allows prototype poisoning of returned objects",
+      "url": "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+      "vulnerable_versions": ">=4.2.0 <=4.3.1",
+      "patched_versions": "<0.0.0",
+      "findings": [
+        {
+          "version": "4.3.1",
+          "paths": [
+            "internal__vite-config>nitropack>@rollup/plugin-node-resolve>deepmerge"
+          ]
+        }
+      ]
+    }
+  ],
+  "dispositions": [
+    {
+      "advisoryId": 1243066,
+      "module": "zod",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "status": "patched-and-verified",
+      "affectedVersions": [
+        "3.25.76"
+      ],
+      "patchedCompatibilityPackage": "zod@4.6.7",
+      "upstreamVersionFix": "knip branch 4.4.3 -> 4.6.7",
+      "patches": [
+        "patches/zod@3.25.76.patch",
+        "patches/zod@4.6.7.patch"
+      ],
+      "scope": "Declared collection upper-bound failures short-circuit before element parsing; no arbitrary global cap for unconstrained collections",
+      "evidence": [
+        "tests/schema-merge-dependency.cjs",
+        "packages/@core/ui-kit/form-ui/__tests__/schema-security.test.ts"
+      ]
+    },
+    {
+      "advisoryId": 1243505,
+      "module": "deepmerge",
+      "url": "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+      "status": "patched-and-verified",
+      "affectedVersions": [
+        "4.3.1"
+      ],
+      "patches": [
+        "patches/deepmerge@4.3.1.patch"
+      ],
+      "scope": "Own data-property writes prevent prototype setters in target clone and source merge; inherited-property protection remains",
+      "evidence": [
+        "tests/schema-merge-dependency.cjs"
+      ]
+    }
+  ],
+  "knownAdvisoryDispositions": {
+    "patchedAndVerified": 2,
+    "unresolvedInThisEReview": 0,
+    "rawVersionAdvisoryRecords": 2
+  },
+  "afterInputs": {
+    "pnpm-workspace.yaml": "a415271504a7abc3a652d26d05589bb2f7d672840b9d0f1bcc582c059f641595",
+    "pnpm-lock.yaml": "ce5af43a90ddc9827bc75ba69e05010c04945a5f2dc123a4793f4927028c23bd"
+  },
+  "beforeInputs": {
+    "pnpm-workspace.yaml": "56f5e653165a484113e08f9bda01fbe84058d8347ab67c69d4b6b4cc1c88f956",
+    "pnpm-lock.yaml": "4e55c5c7f68ee36271600d7084f54ee7ed037afffce2d0a23a7d5637a765c2a7"
+  },
+  "patches": [
+    {
+      "package": "zod@3.25.76",
+      "path": "patches/zod@3.25.76.patch",
+      "patchSha256": "708254a46748648da43702644b58398414866d718d03bd380618851a61d7bd06",
+      "pnpmPatchHash": "708254a46748648da43702644b58398414866d718d03bd380618851a61d7bd06",
+      "files": [
+        {
+          "file": "src/v3/types.ts",
+          "installedSha256": "93513b23508d2aa9761a3155de354dc6d7b04c2e2b46ea7eada199c1bc7d0752"
+        },
+        {
+          "file": "src/v4/core/schemas.ts",
+          "installedSha256": "4dd5ac5a54b822725e3c7082f8d97a155fb9178744b29dc389b2690515f9ed80"
+        },
+        {
+          "file": "v3/types.cjs",
+          "installedSha256": "ac7bafafda739295e7973a7d58609d0541e3243642f142a7903e33c4e1e9dba3"
+        },
+        {
+          "file": "v3/types.js",
+          "installedSha256": "b18247d9169f3df11c599b56cb499dff10ff66a2d147b9c2c1d7cd8aa48656a3"
+        },
+        {
+          "file": "v4/core/schemas.cjs",
+          "installedSha256": "06abbd019c6f2a7a6fff64d6acf1fad8861b857d921776ec9062c91b3a709ba4"
+        },
+        {
+          "file": "v4/core/schemas.js",
+          "installedSha256": "42179a6027998700072367748e0ae4f42d500aa4f9b5a111fcd6e89876485540"
+        }
+      ],
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "installedManifestSha256": "70eedbe34fd52385a4ae2f3e5759b19682189f0118ea73a6e7c32c677f61668e"
+    },
+    {
+      "package": "zod@4.6.7",
+      "path": "patches/zod@4.6.7.patch",
+      "patchSha256": "bf9c95d0326d57a107cb3a3ae441df66ac480d46d504d24c186bc1223e8ebefe",
+      "pnpmPatchHash": "bf9c95d0326d57a107cb3a3ae441df66ac480d46d504d24c186bc1223e8ebefe",
+      "files": [
+        {
+          "file": "src/v3/types.ts",
+          "installedSha256": "413605e418e5f3bb73c4f29a97f4e64327135463d9edeeb7158bc56df3f20cc4"
+        },
+        {
+          "file": "v3/types.cjs",
+          "installedSha256": "dda8f89281d30f6ea3dbec3ab9fab206fcce0ef7f74ccf573d8d1dcc326aeaf9"
+        },
+        {
+          "file": "v3/types.js",
+          "installedSha256": "7bd4cbb67c82c7dd816be0c99aa4b832d7ba6731d1abb54612a1058a99a432c0"
+        }
+      ],
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "installedManifestSha256": "c2d190d9ee4e0bdb60332aaa2130a6a98d65ddb903fe1d29248b15de57832c45"
+    },
+    {
+      "package": "deepmerge@4.3.1",
+      "path": "patches/deepmerge@4.3.1.patch",
+      "patchSha256": "3218c9b7f65436618f5479ef053987c57047dc2482b61a7aea01cdd66c3e489a",
+      "pnpmPatchHash": "3218c9b7f65436618f5479ef053987c57047dc2482b61a7aea01cdd66c3e489a",
+      "files": [
+        {
+          "file": "dist/cjs.js",
+          "installedSha256": "585d35fbf73cb0a26643ea6134d3db460d03934aca33ca2324ca65b1f966e46c"
+        },
+        {
+          "file": "dist/umd.js",
+          "installedSha256": "fa7d28b1d3de2687274d981f6994f94f8f21a496e04d10ee8a070c47b66a665b"
+        },
+        {
+          "file": "index.js",
+          "installedSha256": "3341e6b4715b53cb9151703ad1fdbfdb785743788a9b9b0bed58c3d1d864a8bc"
+        }
+      ],
+      "license": "MIT",
+      "licenseFiles": [
+        "license.txt"
+      ],
+      "installedManifestSha256": "f56978e7a6da1a3c6edee41abb54f98584a2fa2680458c48db820ae772fef0c9"
+    }
+  ],
+  "packageDiff": {
+    "added": [
+      "zod@4.6.7"
+    ],
+    "removed": [
+      "zod@4.4.3"
+    ]
+  },
+  "isolatedInstallation": {
+    "initialIsolatedOfflineAttempt": "blocked by missing metadata for the default mirror; project frozen install passed separately",
+    "cleanOfficialRegistryInstallExitCode": 0,
+    "cleanRuntimeCheckExitCode": 0,
+    "mismatchedPatchInstallExitCode": 1,
+    "mismatchDiagnostic": [
+      "ERR_PNPM_PATCH_FAILED: mismatched patch context rejected"
+    ],
+    "environment": "owned temporary fixture; no project dependencies or patches modified",
+    "fixtureRemoved": true,
+    "rawMismatchLogSha256": "8a15ff6bb6c7e1650fa4ee5328f097fae83c8c6b920160797884f566c08c07ac"
+  },
+  "checks": {
+    "securityGroups": 6,
+    "zodCompiledAndSourceEntryCases": 36,
+    "formVitestTests": 17,
+    "mysqlIntegrationGroups": 30,
+    "e2eTests": 7,
+    "webTypecheck": "passed",
+    "serverBuild": "passed",
+    "webBuild": "passed",
+    "apiContract": "passed",
+    "boundaries": "passed"
+  }
+}
